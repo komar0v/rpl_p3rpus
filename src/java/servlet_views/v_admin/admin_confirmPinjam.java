@@ -5,8 +5,7 @@
  */
 package servlet_views.v_admin;
 
-import DAO_.x_Buku;
-import DAO_.x_Member;
+import DAO_.x_Peminjaman;
 import java.io.IOException;
 import java.io.PrintWriter;
 import javax.servlet.RequestDispatcher;
@@ -21,8 +20,8 @@ import javax.servlet.http.HttpServletResponse;
  *
  * @author ASUS
  */
-@WebServlet(name = "admin_showBuku", urlPatterns = {"/admin/showBuku"})
-public class admin_showBuku extends HttpServlet {
+@WebServlet(name = "admin_confirmPinjam", urlPatterns = {"/admin/confirmPinjam"})
+public class admin_confirmPinjam extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -35,8 +34,22 @@ public class admin_showBuku extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        //response.setContentType("text/html;charset=UTF-8");
+        String user_Admin = null;
 
+        Cookie[] cookies = request.getCookies();
+        for (Cookie cookie : cookies) {
+            if (cookie.getName().equals("usernameAdmin")) {
+                user_Admin = cookie.getValue();
+            }
+        }
+        if (user_Admin != null) {
+            request.setAttribute("list_koleksiBuku", x_Peminjaman.getSemuaPeminjaman());
+
+            RequestDispatcher rd = getServletContext().getRequestDispatcher("/Views_/Panel_Admin/screen_konfirmPinjam_admin.jsp");
+            rd.forward(request, response);
+        } else {
+            response.sendRedirect(request.getContextPath() + "/admin/login");
+        }
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
@@ -52,22 +65,6 @@ public class admin_showBuku extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         processRequest(request, response);
-        String user_Admin = null;
-
-        Cookie[] cookies = request.getCookies();
-        for (Cookie cookie : cookies) {
-            if (cookie.getName().equals("usernameAdmin")) {
-                user_Admin = cookie.getValue();
-            }
-        }
-        if (user_Admin != null) {
-            request.setAttribute("list_koleksiBuku", x_Buku.getSemuaBuku());
-
-            RequestDispatcher rd = getServletContext().getRequestDispatcher("/Views_/Panel_Admin/screen_showBuku_admin.jsp");
-            rd.forward(request, response);
-        } else {
-            response.sendRedirect(request.getContextPath() + "/admin/login");
-        }
     }
 
     /**

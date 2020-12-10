@@ -110,7 +110,7 @@ public class x_Buku {
             conn.close();
 
         } catch (Exception ex) {
-            Logger.getLogger(x_Member.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(x_Buku.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
@@ -130,7 +130,7 @@ public class x_Buku {
             conn.close();
 
         } catch (Exception ex) {
-            Logger.getLogger(x_Member.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(x_Buku.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 

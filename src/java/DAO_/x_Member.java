@@ -40,7 +40,7 @@ public class x_Member {
             }
 
         } catch (Exception ex) {
-            Logger.getLogger(x_Buku.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(x_Member.class.getName()).log(Level.SEVERE, null, ex);
         }
         return detail_member;
     }
@@ -102,7 +102,7 @@ public class x_Member {
             }
 
         } catch (Exception ex) {
-            Logger.getLogger(x_Buku.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(x_Member.class.getName()).log(Level.SEVERE, null, ex);
         }
         return List_member;
     }
@@ -121,7 +121,7 @@ public class x_Member {
             }
 
         } catch (Exception ex) {
-            Logger.getLogger(x_Buku.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(x_Member.class.getName()).log(Level.SEVERE, null, ex);
         }
         return Integer.toString(jumlah_Member);
     }
@@ -135,7 +135,7 @@ public class x_Member {
             hapusBuku.execute();
 
         } catch (Exception ex) {
-            Logger.getLogger(x_Buku.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(x_Member.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 }
