@@ -62,10 +62,9 @@ public class doAdmin_konfirmasiPinjam extends HttpServlet {
         }
         if (user_Admin != null) {
             String idPinjam_ = request.getParameter("idPinjam_");
-            System.out.println(idPinjam_);
             
-//            x_Member daoMember = new x_Member();
-//            daoMember.deleteMember(Integer.parseInt(idMember));
+            x_Peminjaman daoPeminjaman= new x_Peminjaman();
+            daoPeminjaman.admin_konfirmasiPinjam(Integer.parseInt(idPinjam_));
 
             HttpSession session = request.getSession(true);
 

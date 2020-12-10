@@ -90,4 +90,18 @@ public class x_Peminjaman {
         }
         return detail_buku_yang_dipinjam;
     }
+    
+    public void admin_konfirmasiPinjam(int id_pinjam){
+        try {
+            Class.forName("com.mysql.jdbc.Driver");
+            Connection conn = koneksi_db.initializeDatabase();
+            PreparedStatement ps = conn.prepareStatement("UPDATE pinjam_buku SET dikonfirmasikah='sudah' WHERE id_pinjam=?");
+            ps.setInt(1, id_pinjam);
+            ps.executeUpdate();
+            conn.close();
+
+        } catch (Exception ex) {
+            Logger.getLogger(x_Peminjaman.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
 }
