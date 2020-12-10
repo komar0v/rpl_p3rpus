@@ -73,18 +73,15 @@ public class x_Peminjaman {
         try {
             Class.forName("com.mysql.jdbc.Driver");
             Connection conn = koneksi_db.initializeDatabase();
-            PreparedStatement detail_buku_dipinjam = conn.prepareStatement("SELECT *, DATEDIFF(akhir_pinjam,CURRENT_DATE() ) AS pinjam_day_remaining FROM buku INNER JOIN pinjam_buku USING (id_buku)");
+            PreparedStatement detail_buku_dipinjam = conn.prepareStatement("SELECT judul_buku, nama_member, id_pinjam, mulai_pinjam, akhir_pinjam FROM pinjam_buku JOIN buku ON pinjam_buku.id_buku=buku.id_buku JOIN member ON pinjam_buku.id_member=member.id_member");
 
             ResultSet rs4 = detail_buku_dipinjam.executeQuery();
             while (rs4.next()) {
                 M_pinjamBuku buku_dipinjam = new M_pinjamBuku();
                 buku_dipinjam.setId_pinjam(rs4.getInt("id_pinjam"));
-                buku_dipinjam.setId_buku(rs4.getString("id_buku"));
+                buku_dipinjam.setNama_member(rs4.getString("nama_member"));
                 buku_dipinjam.setJudul_buku(rs4.getString("judul_buku"));
-                buku_dipinjam.setAkhir_pinjam(rs4.getString("akhir_pinjam"));
-                buku_dipinjam.setSudah_diambil(rs4.getString("diambilkah"));
-                buku_dipinjam.setDikonfirmasikah(rs4.getString("dikonfirmasikah"));
-                buku_dipinjam.setPinjam_day_remaining(rs4.getString("pinjam_day_remaining"));
+                buku_dipinjam.setMulai_pinjam(rs4.getString("mulai_pinjam"));
                 detail_buku_yang_dipinjam.add(buku_dipinjam);
             }
             

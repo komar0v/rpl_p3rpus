@@ -36,44 +36,25 @@
                                     <tr>
                                         <th>ID Pinjam</th>
                                         <th>Nama Member</th>
-                                        <th>Buku dipinjam</th>
+                                        <th>Judul Buku</th>
                                         <th>Tanggal ambil buku</th>
                                         <th>Tindakan</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <% ArrayList<M_pinjamBuku> listMembers = (ArrayList<M_pinjamBuku>) request.getAttribute("list_members");
-                                        for (M_akunMember members_ : listMembers) {
+                                    <% ArrayList<M_pinjamBuku> listPermintaanPinjam = (ArrayList<M_pinjamBuku>) request.getAttribute("list_semuaPermintaanPinjam");
+                                        for (M_pinjamBuku permintaanPinjam : listPermintaanPinjam) {
                                     %>
                                     <tr>
-                                        <td><%= members_.getNama_member()%></td>
+                                        <td><%= permintaanPinjam.getId_pinjam()%></td>
+                                        <td><%= permintaanPinjam.getNama_member()%></td>
+                                        <td><%= permintaanPinjam.getJudul_buku()%></td>
+                                        <td><%= permintaanPinjam.getMulai_pinjam()%></td>
                                         <td>
-                                            <button type="button" data-toggle="modal" data-target="#modal-sm2" class="btn btn-danger btn-sm"><i class="fas fa-trash-alt"></i> Hapus Member</button>
-                                            <div class="modal fade" id="modal-sm2">
-                                                <div class="modal-dialog modal-sm">
-                                                    <div class="modal-content">
-                                                        <div class="modal-header">
-                                                            <h4 class="modal-title">Konfirmasi Hapus</h4>
-
-                                                        </div>
-                                                        <div class="modal-body">
-                                                            <div class="alert alert-warning alert-dismissible">
-                                                                <h6><i class="icon fas fa-exclamation-triangle"></i>Perhatian!</h6>
-
-                                                                <p>Semua data member "<%= members_.getNama_member()%>" akan hilang, lanjutkan?<br></p>
-
-                                                            </div>
-                                                        </div>
-                                                        <div class="modal-footer justify-content-between">
-                                                            <button type="button" class="btn btn-block btn-default" data-dismiss="modal">Tidak, batalkan hapus</button>
-                                                            <button onclick="window.location.href = '<%=request.getContextPath()%>/admin/doAdmin_deleteMember?idMember_=<%= members_.getId_member()%>'" type="button" class="btn btn-block btn-primary">Ya, lanjut hapus</button>
-                                                        </div>
-                                                    </div>
-                                                    <!-- /.modal-content -->
-                                                </div>
-                                                <!-- /.modal-dialog -->
-                                            </div>
+                                            <button onclick="window.location.href = '<%=request.getContextPath()%>/admin/doAdmin_konfirmasiPinjam?idPinjam_=<%= permintaanPinjam.getId_pinjam()%>'" type="button" class="btn btn-success btn-sm"><i class="fas fa-check-circle"></i> Konfirmasi</button>
+                                           
                                         </td>
+                                        
                                     </tr>
                                     <%}%> 
                                 </tbody>

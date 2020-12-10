@@ -43,7 +43,7 @@ public class admin_confirmPinjam extends HttpServlet {
             }
         }
         if (user_Admin != null) {
-            request.setAttribute("list_koleksiBuku", x_Peminjaman.getSemuaPeminjaman());
+            request.setAttribute("list_semuaPermintaanPinjam", x_Peminjaman.getSemuaPeminjaman());
 
             RequestDispatcher rd = getServletContext().getRequestDispatcher("/Views_/Panel_Admin/screen_konfirmPinjam_admin.jsp");
             rd.forward(request, response);

@@ -180,7 +180,7 @@
                                     </li>
 
                                     <li class="nav-item">
-                                        <a href="#" class="nav-link">
+                                        <a href="<%=request.getContextPath()%>/admin/confirmPinjam" class="nav-link">
                                             <i class="fas fa-bookmark nav-icon"></i>
                                             <p>Konfirmasi Peminjaman</p>
                                         </a>

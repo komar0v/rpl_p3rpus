@@ -11,7 +11,15 @@ package Model_;
  */
 public class M_pinjamBuku {
     int id_pinjam, id_member;
-    String id_buku;
+    String id_buku, nama_member;
+
+    public String getNama_member() {
+        return nama_member;
+    }
+
+    public void setNama_member(String nama_member) {
+        this.nama_member = nama_member;
+    }
     String mulai_pinjam,akhir_pinjam, pinjam_day_remaining;
     String judul_buku;
     String sudah_diambil, dikonfirmasikah;
