@@ -3,25 +3,25 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package Controller_.Admin;
+package servlet_views.v_admin;
 
 import DAO_.x_Peminjaman;
 import java.io.IOException;
 import java.io.PrintWriter;
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
 /**
  *
  * @author ASUS
  */
-@WebServlet(name = "doAdmin_konfirmasiBatalPinjam", urlPatterns = {"/admin/doAdmin_konfirmasiBatalPinjam"})
-public class doAdmin_konfirmasiBatalPinjam extends HttpServlet {
+@WebServlet(name = "admin_pengembalianBuku", urlPatterns = {"/admin/pengembalianBuku"})
+public class admin_pengembalianBuku extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -34,7 +34,23 @@ public class doAdmin_konfirmasiBatalPinjam extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        
+        response.setContentType("text/html;charset=UTF-8");
+        String user_Admin = null;
+
+        Cookie[] cookies = request.getCookies();
+        for (Cookie cookie : cookies) {
+            if (cookie.getName().equals("usernameAdmin")) {
+                user_Admin = cookie.getValue();
+            }
+        }
+        if (user_Admin != null) {
+            request.setAttribute("list_semuaOnGoingPinjam", x_Peminjaman.getHistoryPeminjaman());
+
+            RequestDispatcher rd = getServletContext().getRequestDispatcher("/Views_/Panel_Admin/screen_pengembalianBuku_admin.jsp");
+            rd.forward(request, response);
+        } else {
+            response.sendRedirect(request.getContextPath() + "/admin/login");
+        }
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
@@ -50,27 +66,6 @@ public class doAdmin_konfirmasiBatalPinjam extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         processRequest(request, response);
-        String user_Admin = null;
-
-        Cookie[] cookies = request.getCookies();
-        for (Cookie cookie : cookies) {
-            if (cookie.getName().equals("usernameAdmin")) {
-                user_Admin = cookie.getValue();
-            }
-        }
-        if (user_Admin != null) {
-            String idPinjam_ = request.getParameter("idPinjam_");
-            
-            x_Peminjaman daoPeminjaman= new x_Peminjaman();
-            daoPeminjaman.admin_konfirmasiPembatalanPinjam(Integer.parseInt(idPinjam_));
-
-            HttpSession session = request.getSession(true);
-
-            session.setAttribute("flashMessageAdmin", "Toast.fire({icon: \"success\",title: \" Dikonfirmasi \"});");
-            response.sendRedirect(request.getContextPath() + "/admin/confirmPembatalan");
-        } else {
-            response.sendRedirect(request.getContextPath() + "/admin/login");
-        }
     }
 
     /**
