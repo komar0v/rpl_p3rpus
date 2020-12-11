@@ -20,8 +20,8 @@ import javax.servlet.http.HttpServletResponse;
  *
  * @author ASUS
  */
-@WebServlet(name = "member_daftarPinjam", urlPatterns = {"/member/daftarPinjam"})
-public class member_daftarPinjam extends HttpServlet {
+@WebServlet(name = "member_batalPinjam", urlPatterns = {"/member/batalPinjam"})
+public class member_batalPinjam extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -34,22 +34,6 @@ public class member_daftarPinjam extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-
-    }
-
-    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
-    /**
-     * Handles the HTTP <code>GET</code> method.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
-    @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        processRequest(request, response);
         String namaMember = null;
         String emailnyaMember = null;
         String idMember = null;
@@ -68,13 +52,28 @@ public class member_daftarPinjam extends HttpServlet {
         }
 
         if (emailnyaMember != null) {
-            request.setAttribute("listBuku_yangdipinjam", x_Peminjaman.getBuku_yang_dipinjam(Integer.parseInt(idMember)));
+            request.setAttribute("listBuku_yangmauDibatalkanPinjamnya", x_Peminjaman.member_getBuku_yang_mauDIBATALKAN(Integer.parseInt(idMember)));
 
-            RequestDispatcher rd = getServletContext().getRequestDispatcher("/Views_/Panel_Member/screen_daftarPinjam_member.jsp");
+            RequestDispatcher rd = getServletContext().getRequestDispatcher("/Views_/Panel_Member/screen_batalPinjamBuku_member.jsp");
             rd.forward(request, response);
         } else {
             response.sendRedirect(request.getContextPath() + "/");
         }
+    }
+
+    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
+    /**
+     * Handles the HTTP <code>GET</code> method.
+     *
+     * @param request servlet request
+     * @param response servlet response
+     * @throws ServletException if a servlet-specific error occurs
+     * @throws IOException if an I/O error occurs
+     */
+    @Override
+    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        processRequest(request, response);
     }
 
     /**

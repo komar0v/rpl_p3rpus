@@ -26,13 +26,14 @@ public class x_Peminjaman {
         try {
             Class.forName("com.mysql.jdbc.Driver");
             Connection conn = koneksi_db.initializeDatabase();
-            PreparedStatement ps = conn.prepareStatement("INSERT INTO pinjam_buku VALUES (?,?,?,?,(mulai_pinjam + INTERVAL 14 DAY),?,?)");
+            PreparedStatement ps = conn.prepareStatement("INSERT INTO pinjam_buku VALUES (?,?,?,?,(mulai_pinjam + INTERVAL 14 DAY),?,?,?)");
             ps.setInt(1, pinjem.getId_pinjam());
             ps.setInt(2, pinjem.getId_member());
             ps.setString(3, pinjem.getId_buku());
             ps.setString(4, pinjem.getMulai_pinjam());
             ps.setString(5, pinjem.getSudah_diambil());
             ps.setString(6, pinjem.getDikonfirmasikah());
+            ps.setString(7, pinjem.getBatalkah());
             ps.executeUpdate();
             conn.close();
 
@@ -180,7 +181,7 @@ public class x_Peminjaman {
         return detail_buku_yang_dipinjam;
     }
     
-    public String getBuku_dipinjamMember(int id_member) {
+    public String getJumlahBuku_dipinjamMember(int id_member) {
         int jumlah_buku_dipinjam = 0;
         try {
             Class.forName("com.mysql.jdbc.Driver");
@@ -197,6 +198,31 @@ public class x_Peminjaman {
             Logger.getLogger(x_Member.class.getName()).log(Level.SEVERE, null, ex);
         }
         return Integer.toString(jumlah_buku_dipinjam);
+    }
+    
+    public static List<M_pinjamBuku> member_getBuku_yang_mauDIBATALKAN(int id_member) {
+        ArrayList<M_pinjamBuku> detail_buku_yang_dipinjam = new ArrayList<M_pinjamBuku>();
+        try {
+            Class.forName("com.mysql.jdbc.Driver");
+            Connection conn = koneksi_db.initializeDatabase();
+            PreparedStatement detail_buku_dipinjam = conn.prepareStatement("SELECT dikonfirmasikah, batalkah, judul_buku, nama_member, id_pinjam, mulai_pinjam, akhir_pinjam FROM pinjam_buku JOIN buku ON pinjam_buku.id_buku=buku.id_buku JOIN member ON pinjam_buku.id_member=member.id_member WHERE dikonfirmasikah='belum' AND batalkah='tidak' AND pinjam_buku.id_member=?");
+            detail_buku_dipinjam.setInt(1, id_member);
+
+            ResultSet rs4 = detail_buku_dipinjam.executeQuery();
+            while (rs4.next()) {
+                M_pinjamBuku buku_dipinjam = new M_pinjamBuku();
+                buku_dipinjam.setId_pinjam(rs4.getInt("id_pinjam"));
+                buku_dipinjam.setJudul_buku(rs4.getString("judul_buku"));
+                buku_dipinjam.setAkhir_pinjam(rs4.getString("akhir_pinjam"));
+                buku_dipinjam.setDikonfirmasikah(rs4.getString("dikonfirmasikah"));
+                buku_dipinjam.setBatalkah(rs4.getString("batalkah"));
+                detail_buku_yang_dipinjam.add(buku_dipinjam);
+            }
+            
+        } catch (Exception ex) {
+            Logger.getLogger(x_Peminjaman.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return detail_buku_yang_dipinjam;
     }
     
     

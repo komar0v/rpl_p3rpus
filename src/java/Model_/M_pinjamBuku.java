@@ -12,6 +12,15 @@ package Model_;
 public class M_pinjamBuku {
     int id_pinjam, id_member;
     String id_buku, nama_member;
+    String batalkah;
+
+    public String getBatalkah() {
+        return batalkah;
+    }
+
+    public void setBatalkah(String batalkah) {
+        this.batalkah = batalkah;
+    }
 
     public String getNama_member() {
         return nama_member;

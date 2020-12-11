@@ -55,7 +55,7 @@ public class member_home extends HttpServlet {
 
         if (emailnyaMember!=null) {
             x_Peminjaman daoPinjem = new x_Peminjaman();
-            String jml_buku_dipinjam = daoPinjem.getBuku_dipinjamMember(Integer.parseInt(idMember));
+            String jml_buku_dipinjam = daoPinjem.getJumlahBuku_dipinjamMember(Integer.parseInt(idMember));
             request.setAttribute("jumlahbuku_dipinjam", jml_buku_dipinjam);
             
             RequestDispatcher rd = getServletContext().getRequestDispatcher("/Views_/Panel_Member/screen_home_member.jsp");

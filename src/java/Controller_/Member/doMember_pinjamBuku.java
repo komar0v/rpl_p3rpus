@@ -112,6 +112,7 @@ public class doMember_pinjamBuku extends HttpServlet {
                 pinjemBuku.setId_member(idMember_int);
                 pinjemBuku.setSudah_diambil("belum");
                 pinjemBuku.setDikonfirmasikah("belum");
+                pinjemBuku.setBatalkah("tidak");
 
                 x_Peminjaman daoPinjam = new x_Peminjaman();
                 daoPinjam.member_pinjamBuku(pinjemBuku);

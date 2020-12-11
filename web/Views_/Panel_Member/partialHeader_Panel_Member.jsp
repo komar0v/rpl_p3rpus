@@ -104,13 +104,13 @@
                 <ul class="navigation navigation-main" id="main-menu-navigation" data-menu="menu-navigation">
                     <li class=" nav-item"><a href="<%=request.getContextPath()%>/member/home"><i class="feather icon-home"></i><span class="menu-title">Dashboard</span></a></li>
 
-                    <li class=" nav-item"><a href="#"><i class="fa fa-book"></i><span class="menu-title">Pinjam Buku</span></a></li>
+                    <li class=" nav-item"><a href="<%=request.getContextPath()%>/member/pinjamBuku"><i class="fa fa-book"></i><span class="menu-title">Pinjam Buku</span></a></li>
 
                     <li class=" nav-item"><a href="#"><i class="fa fa-clock-o"></i><span class="menu-title">Perpanjang Pinjam</span></a></li>
 
                     <li class=" nav-item"><a href="<%=request.getContextPath()%>/member/daftarPinjam"><i class="fa fa-list-ol"></i><span class="menu-title">Daftar Pinjam</span></a></li>
 
-                    <li class=" nav-item"><a href="#"><i class="fa fa-times-circle-o"></i><span class="menu-title">Batal Pinjam</span></a></li>
+                    <li class=" nav-item"><a href="<%=request.getContextPath()%>/member/batalPinjam"><i class="fa fa-times-circle-o"></i><span class="menu-title">Batal Pinjam</span></a></li>
 
                     <li class=" nav-item"><a href="#"><i class="fa fa-money"></i><span class="menu-title">Denda</span></a></li>
 
