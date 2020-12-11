@@ -46,7 +46,6 @@
                                                 <tr>
                                                     <th>Judul Buku</th>
                                                     <th>Batas Peminjaman</th>
-                                                    <th>Dikonfirmasi</th>
                                                     <th>Status</th>
 
                                                 </tr>
@@ -62,13 +61,9 @@
 
                                                 <tr>
                                                     <td><%= buku_dipinjam.getJudul_buku()%></td>
-                                                    <td><%= buku_dipinjam.getId_pinjam()%></td>
+                                                    <td><%= buku_dipinjam.getAkhir_pinjam()%></td>
 
-                                                    <% if (buku_dipinjam.getDikonfirmasikah().equals("belum")) {
-                                                            out.print("<td><div class=\"badge badge-pill badge-warning\">belum dikonfirmasi</div></td>");
-                                                        } else {
-                                                            out.print("<td><div class=\"badge badge-pill badge-success\">sudah dikonfirmasi</div></td>");
-                                                        }%>
+                                                    
 
                                                     <% if (buku_dipinjam.getBatalkah().equals("tidak")) {
                                                             out.print("<td><button onclick=\"window.location.href ='"+request.getContextPath()+"/member/doMember_mintaDibatalkanPinjam?idPinjam_="+buku_dipinjam.getId_pinjam()+"'\" type=\"button\" class=\"btn btn-relief-primary mr-1 mb-1\">Batal Pinjam</button></td>");
