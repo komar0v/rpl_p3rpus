@@ -48,6 +48,7 @@
                                                     <th>Batas Peminjaman</th>
                                                     <th>Dikonfirmasi</th>
                                                     <th>Status</th>
+                                                    <th>Tindakan</th>
 
                                                 </tr>
                                             </thead>
@@ -77,6 +78,8 @@
                                                         } else {
                                                             out.print("<td><strong>" + buku_dipinjam.getPinjam_day_remaining() + " hari lagi</strong></td>");
                                                         }%>
+                                                        
+                                                        <td><button onclick="window.location.href ='<%= request.getContextPath()%>/member/detailBuku_dipinjam?idPinjam_=<%= buku_dipinjam.getId_pinjam()%>'" type=\"button\" class="btn btn-relief-primary mr-1 mb-1">Detail</button></td>
 
                                                 </tr>
                                                 <%}%>

@@ -7,6 +7,7 @@ package DAO_;
 
 import Controller_.koneksi_db;
 import Model_.M_buku;
+import Model_.M_detailBuku_Dipinjam;
 import Model_.M_pinjamBuku;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -276,6 +277,40 @@ public class x_Peminjaman {
         } catch (Exception ex) {
             Logger.getLogger(x_Peminjaman.class.getName()).log(Level.SEVERE, null, ex);
         }
+    }
+    
+    public static List<M_detailBuku_Dipinjam> getDetailBuku_yangDipinjam(int id_peminjaman) {
+        ArrayList<M_detailBuku_Dipinjam> detail_buku_yang_dipinjam = new ArrayList<M_detailBuku_Dipinjam>();
+        try {
+            Class.forName("com.mysql.jdbc.Driver");
+            Connection conn = koneksi_db.initializeDatabase();
+            PreparedStatement detail_buku_dipinjam = conn.prepareStatement("SELECT *, DATEDIFF(akhir_pinjam,CURRENT_DATE() ) AS pinjam_day_remaining FROM buku INNER JOIN pinjam_buku USING (id_buku) WHERE id_pinjam=?");
+            detail_buku_dipinjam.setInt(1, id_peminjaman);
+
+            ResultSet rs4 = detail_buku_dipinjam.executeQuery();
+            while (rs4.next()) {
+                M_detailBuku_Dipinjam buku_dipinjam = new M_detailBuku_Dipinjam();
+                buku_dipinjam.setId_pinjam(rs4.getInt("id_pinjam"));
+                
+                buku_dipinjam.setJudul_buku(rs4.getString("judul_buku"));
+                buku_dipinjam.setIsbn_buku(rs4.getString("isbn_buku"));
+                buku_dipinjam.setPenerbit_buku(rs4.getString("penerbit_buku"));
+                buku_dipinjam.setPengarang_buku(rs4.getString("pengarang_buku"));
+                buku_dipinjam.setKategori_buku(rs4.getString("kategori_buku"));
+                buku_dipinjam.setTahunterbit_buku(rs4.getString("tahunterbit_buku"));
+                
+                buku_dipinjam.setMulai_pinjam(rs4.getString("mulai_pinjam"));
+                buku_dipinjam.setAkhir_pinjam(rs4.getString("akhir_pinjam"));
+                buku_dipinjam.setPinjam_day_remaining(rs4.getString("pinjam_day_remaining"));
+                buku_dipinjam.setDikonfirmasikah(rs4.getString("dikonfirmasikah"));
+                buku_dipinjam.setSudah_diambil(rs4.getString("diambilkah"));
+                detail_buku_yang_dipinjam.add(buku_dipinjam);
+            }
+            
+        } catch (Exception ex) {
+            Logger.getLogger(x_Peminjaman.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return detail_buku_yang_dipinjam;
     }
     
     

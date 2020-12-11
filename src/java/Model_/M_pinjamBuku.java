@@ -10,9 +10,13 @@ package Model_;
  * @author ASUS
  */
 public class M_pinjamBuku {
+
     int id_pinjam, id_member;
     String id_buku, nama_member;
     String batalkah;
+    String mulai_pinjam, akhir_pinjam, pinjam_day_remaining;
+    String judul_buku;
+    String sudah_diambil, dikonfirmasikah;
 
     public String getBatalkah() {
         return batalkah;
@@ -29,9 +33,6 @@ public class M_pinjamBuku {
     public void setNama_member(String nama_member) {
         this.nama_member = nama_member;
     }
-    String mulai_pinjam,akhir_pinjam, pinjam_day_remaining;
-    String judul_buku;
-    String sudah_diambil, dikonfirmasikah;
 
     public String getDikonfirmasikah() {
         return dikonfirmasikah;
@@ -48,7 +49,6 @@ public class M_pinjamBuku {
     public void setSudah_diambil(String sudah_diambil) {
         this.sudah_diambil = sudah_diambil;
     }
-    
 
     public M_pinjamBuku() {
     }
@@ -61,8 +61,6 @@ public class M_pinjamBuku {
         this.pinjam_day_remaining = pinjam_day_remaining;
     }
 
-   
-
     public String getJudul_buku() {
         return judul_buku;
     }
@@ -70,8 +68,6 @@ public class M_pinjamBuku {
     public void setJudul_buku(String judul_buku) {
         this.judul_buku = judul_buku;
     }
-
-    
 
     public int getId_pinjam() {
         return id_pinjam;
@@ -112,7 +108,5 @@ public class M_pinjamBuku {
     public void setAkhir_pinjam(String akhir_pinjam) {
         this.akhir_pinjam = akhir_pinjam;
     }
-    
-    
-    
+
 }
