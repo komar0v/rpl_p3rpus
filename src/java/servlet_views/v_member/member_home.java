@@ -5,6 +5,7 @@
  */
 package servlet_views.v_member;
 
+import DAO_.x_Peminjaman;
 import java.io.IOException;
 import java.io.PrintWriter;
 import javax.servlet.RequestDispatcher;
@@ -53,6 +54,10 @@ public class member_home extends HttpServlet {
         }
 
         if (emailnyaMember!=null) {
+            x_Peminjaman daoPinjem = new x_Peminjaman();
+            String jml_buku_dipinjam = daoPinjem.getBuku_dipinjamMember(Integer.parseInt(idMember));
+            request.setAttribute("jumlahbuku_dipinjam", jml_buku_dipinjam);
+            
             RequestDispatcher rd = getServletContext().getRequestDispatcher("/Views_/Panel_Member/screen_home_member.jsp");
             rd.forward(request, response);
         } else {

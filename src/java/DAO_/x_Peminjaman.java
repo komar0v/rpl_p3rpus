@@ -180,5 +180,24 @@ public class x_Peminjaman {
         return detail_buku_yang_dipinjam;
     }
     
+    public String getBuku_dipinjamMember(int id_member) {
+        int jumlah_buku_dipinjam = 0;
+        try {
+            Class.forName("com.mysql.jdbc.Driver");
+            Connection conn = koneksi_db.initializeDatabase();
+            PreparedStatement psJml_bukuDipinjam = conn.prepareStatement("SELECT COUNT(*) AS jumlah_buku_dipinjam FROM pinjam_buku WHERE id_member=?");
+            psJml_bukuDipinjam.setInt(1, id_member);
+            ResultSet rs4 = psJml_bukuDipinjam.executeQuery();
+
+            while (rs4.next()) {
+                jumlah_buku_dipinjam = rs4.getInt("jumlah_buku_dipinjam");
+            }
+
+        } catch (Exception ex) {
+            Logger.getLogger(x_Member.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return Integer.toString(jumlah_buku_dipinjam);
+    }
+    
     
 }

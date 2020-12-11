@@ -40,7 +40,7 @@
                         </div>
                     </div>
                     <div class="col-lg-3 col-md-6 col-12">
-                        <a href="<?php echo base_url('Member_Panel/daftar_peminjaman') ?>">
+                        <a href="<%=request.getContextPath()%>/member/daftarPinjam">
                             <div class="card">
                                 <div class="card-header d-flex flex-column align-items-start pb-0">
                                     <div class="avatar bg-rgba-primary p-50 m-0">
@@ -48,7 +48,7 @@
                                             <i class="fa fa-book text-primary font-medium-5"></i>
                                         </div>
                                     </div>
-                                    <h2 class="text-bold-700 mt-1 mb-25">x</h2>
+                                    <h2 class="text-bold-700 mt-1 mb-25">${jumlahbuku_dipinjam}</h2>
                                     <p class="mb-0">Buku Dipinjam</p>
                                 </div>
                                 <div class="card-content">
