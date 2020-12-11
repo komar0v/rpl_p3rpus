@@ -17,7 +17,7 @@
     $('.format-picker').pickadate({
         format: 'yyyy-mm-dd',
         disable: [
-            {from: [0, 0, 0], to: true},
+            {from: [0, 0, 0], to: yesterday},
             1
         ]
     });

@@ -54,11 +54,9 @@ public class x_Peminjaman {
             ps_1.setInt(1, id_pinjam);
             ps_1.executeUpdate();
             
-            PreparedStatement ps_2 = conn.prepareStatement("UPDATE pinjam_buku SET akhir_pinjam= WHERE id_pinjam=?");
-            String tanggal_kembali;
-            
-//            ps_2.setString(1, tanggal_kembali);
-            ps_2.setInt(2, id_pinjam);
+            PreparedStatement ps_2 = conn.prepareStatement("UPDATE pinjam_buku SET akhir_pinjam=CURRENT_DATE() WHERE id_pinjam=?");
+           
+            ps_2.setInt(1, id_pinjam);
             ps_2.executeUpdate();
             
             conn.close();
@@ -276,6 +274,30 @@ public class x_Peminjaman {
             Class.forName("com.mysql.jdbc.Driver");
             Connection conn = koneksi_db.initializeDatabase();
             PreparedStatement detail_buku_dipinjam = conn.prepareStatement("SELECT judul_buku, nama_member, id_pinjam, mulai_pinjam, akhir_pinjam FROM pinjam_buku JOIN buku ON pinjam_buku.id_buku=buku.id_buku JOIN member ON pinjam_buku.id_member=member.id_member WHERE diambilkah='sudah' ORDER BY mulai_pinjam DESC");
+
+            ResultSet rs4 = detail_buku_dipinjam.executeQuery();
+            while (rs4.next()) {
+                M_pinjamBuku buku_dipinjam = new M_pinjamBuku();
+                buku_dipinjam.setId_pinjam(rs4.getInt("id_pinjam"));
+                buku_dipinjam.setNama_member(rs4.getString("nama_member"));
+                buku_dipinjam.setJudul_buku(rs4.getString("judul_buku"));
+                buku_dipinjam.setMulai_pinjam(rs4.getString("mulai_pinjam"));
+                buku_dipinjam.setAkhir_pinjam(rs4.getString("akhir_pinjam"));
+                detail_buku_yang_dipinjam.add(buku_dipinjam);
+            }
+            
+        } catch (Exception ex) {
+            Logger.getLogger(x_Peminjaman.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return detail_buku_yang_dipinjam;
+    }
+    
+    public static List<M_pinjamBuku> getHistoryPeminjaman_yangMauDikembalikan() {
+        ArrayList<M_pinjamBuku> detail_buku_yang_dipinjam = new ArrayList<M_pinjamBuku>();
+        try {
+            Class.forName("com.mysql.jdbc.Driver");
+            Connection conn = koneksi_db.initializeDatabase();
+            PreparedStatement detail_buku_dipinjam = conn.prepareStatement("SELECT judul_buku, nama_member, id_pinjam, mulai_pinjam, akhir_pinjam FROM pinjam_buku JOIN buku ON pinjam_buku.id_buku=buku.id_buku JOIN member ON pinjam_buku.id_member=member.id_member WHERE diambilkah='sudah' AND dikembalikan='belum' ORDER BY mulai_pinjam DESC");
 
             ResultSet rs4 = detail_buku_dipinjam.executeQuery();
             while (rs4.next()) {

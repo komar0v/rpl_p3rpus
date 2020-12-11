@@ -36,7 +36,7 @@ public class doAdmin_konfirmasiPengembalianBuku extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        
+
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
@@ -78,24 +78,23 @@ public class doAdmin_konfirmasiPengembalianBuku extends HttpServlet {
         if (user_Admin != null) {
             String idPinjam_string = request.getParameter("idPinjam_");
             int idPinjam_int = Integer.parseInt(idPinjam_string);
-            
+
             x_Peminjaman cekDayRemain = new x_Peminjaman();
             int dayRemain = Integer.parseInt(cekDayRemain.getDayRemaining(idPinjam_int));
             int dendaPerhari = 2000;
-            
-            if(dayRemain<=0){
-                int besarDenda = abs(dayRemain*dendaPerhari);
-                System.out.println("DENDA = Rp. "+besarDenda);
-                
-                
-            }else if(dayRemain>=1){
+
+            if (dayRemain <= 0) {
+                int besarDenda = abs(dayRemain * dendaPerhari);
+                System.out.println("DENDA = Rp. " + besarDenda);
+
+            } else if (dayRemain >= 1) {
                 System.out.println("TIDAK DENDA");
+                x_Peminjaman sudah_dikembalikan = new x_Peminjaman();
+                sudah_dikembalikan.admin_konfirmasiPengembalian_TANPA_DENDA(idPinjam_int);
+                session.setAttribute("flashMessageAdmin", "Toast.fire({icon: \"success\",title: \" Dikonfirmasi!, Member tidak denda \"});");
+                response.sendRedirect(request.getContextPath() + "/admin/pengembalianBuku");
             }
 
-            
-
-            session.setAttribute("flashMessageAdmin", "Toast.fire({icon: \"success\",title: \" cek DONE \"});");
-            response.sendRedirect(request.getContextPath() + "/admin/pengembalianBuku");
         } else {
             response.sendRedirect(request.getContextPath() + "/admin/login");
         }

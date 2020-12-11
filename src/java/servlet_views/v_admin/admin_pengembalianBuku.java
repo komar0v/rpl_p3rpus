@@ -44,7 +44,7 @@ public class admin_pengembalianBuku extends HttpServlet {
             }
         }
         if (user_Admin != null) {
-            request.setAttribute("list_semuaOnGoingPinjam", x_Peminjaman.getHistoryPeminjaman());
+            request.setAttribute("list_semuaOnGoingPinjam", x_Peminjaman.getHistoryPeminjaman_yangMauDikembalikan());
 
             RequestDispatcher rd = getServletContext().getRequestDispatcher("/Views_/Panel_Admin/screen_pengembalianBuku_admin.jsp");
             rd.forward(request, response);
