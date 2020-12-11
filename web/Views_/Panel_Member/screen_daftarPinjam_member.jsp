@@ -47,7 +47,7 @@
                                                     <th>Judul Buku</th>
                                                     <th>Batas Peminjaman</th>
                                                     <th>Dikonfirmasi</th>
-                                                    <th>Diambil</th>
+                                                    <th>Status</th>
 
                                                 </tr>
                                             </thead>
@@ -72,6 +72,8 @@
 
                                                     <% if (buku_dipinjam.getSudah_diambil().equals("belum")) {
                                                             out.print("<td><div class=\"badge badge-pill badge-warning\">Buku belum diambil</div></td>");
+                                                        } else if (buku_dipinjam.getSudah_diambil().equals("batal")) {
+                                                            out.print("<td><div class=\"badge badge-pill badge-danger\">Buku batal diambil</div></td>");
                                                         } else {
                                                             out.print("<td><strong>" + buku_dipinjam.getPinjam_day_remaining() + " hari lagi</strong></td>");
                                                         }%>

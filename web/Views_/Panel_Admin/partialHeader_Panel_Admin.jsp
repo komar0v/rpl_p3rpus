@@ -196,7 +196,7 @@
                             </li>
 
                             <li class="nav-item has-treeview">
-                                <a href="#" class="nav-link">
+                                <a href="<%=request.getContextPath()%>/admin/historyPinjam" class="nav-link">
                                     <i class="nav-icon fas fa-undo-alt"></i>
                                     <p>History Peminjaman</p>
                                 </a>
