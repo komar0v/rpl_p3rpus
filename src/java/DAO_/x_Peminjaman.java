@@ -22,6 +22,51 @@ import java.util.logging.Logger;
  * @author ASUS
  */
 public class x_Peminjaman {
+    
+    public String getDayRemaining(int id_pinjam){
+        String day_remain = "";
+        try {
+            Class.forName("com.mysql.jdbc.Driver");
+            Connection conn = koneksi_db.initializeDatabase();
+            PreparedStatement detail_buku_dipinjam = conn.prepareStatement("SELECT DATEDIFF(akhir_pinjam,CURRENT_DATE() ) AS pinjam_day_remaining FROM buku INNER JOIN pinjam_buku USING (id_buku) WHERE id_pinjam=? AND dikembalikan='belum'");
+            detail_buku_dipinjam.setInt(1, id_pinjam);
+
+            ResultSet rs4 = detail_buku_dipinjam.executeQuery();
+            while (rs4.next()) {
+                day_remain = rs4.getString("pinjam_day_remaining");
+            }
+            
+        } catch (Exception ex) {
+            Logger.getLogger(x_Peminjaman.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return day_remain;
+    }
+    
+    public void admin_konfirmasiPengembalian_WITH_DENDA(){
+        
+    }
+    
+    public void admin_konfirmasiPengembalian_TANPA_DENDA(int id_pinjam){
+        try {
+            Class.forName("com.mysql.jdbc.Driver");
+            Connection conn = koneksi_db.initializeDatabase();
+            PreparedStatement ps_1 = conn.prepareStatement("UPDATE pinjam_buku SET dikembalikan='sudah' WHERE id_pinjam=?");
+            ps_1.setInt(1, id_pinjam);
+            ps_1.executeUpdate();
+            
+            PreparedStatement ps_2 = conn.prepareStatement("UPDATE pinjam_buku SET akhir_pinjam= WHERE id_pinjam=?");
+            String tanggal_kembali;
+            
+//            ps_2.setString(1, tanggal_kembali);
+            ps_2.setInt(2, id_pinjam);
+            ps_2.executeUpdate();
+            
+            conn.close();
+
+        } catch (Exception ex) {
+            Logger.getLogger(x_Peminjaman.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
 
     public void member_pinjamBuku(M_pinjamBuku pinjem) {
         try {
@@ -49,7 +94,7 @@ public class x_Peminjaman {
         try {
             Class.forName("com.mysql.jdbc.Driver");
             Connection conn = koneksi_db.initializeDatabase();
-            PreparedStatement detail_buku_dipinjam = conn.prepareStatement("SELECT *, DATEDIFF(akhir_pinjam,CURRENT_DATE() ) AS pinjam_day_remaining FROM buku INNER JOIN pinjam_buku USING (id_buku) WHERE id_member=? AND batalkah='tidak'");
+            PreparedStatement detail_buku_dipinjam = conn.prepareStatement("SELECT *, DATEDIFF(akhir_pinjam,CURRENT_DATE() ) AS pinjam_day_remaining FROM buku INNER JOIN pinjam_buku USING (id_buku) WHERE id_member=? AND batalkah='tidak' AND dikembalikan='belum'");
             detail_buku_dipinjam.setInt(1, id_member);
 
             ResultSet rs4 = detail_buku_dipinjam.executeQuery();
@@ -76,7 +121,7 @@ public class x_Peminjaman {
         try {
             Class.forName("com.mysql.jdbc.Driver");
             Connection conn = koneksi_db.initializeDatabase();
-            PreparedStatement detail_buku_dipinjam = conn.prepareStatement("SELECT *, DATEDIFF(akhir_pinjam,CURRENT_DATE() ) AS pinjam_day_remaining FROM buku INNER JOIN pinjam_buku USING (id_buku) WHERE id_member=? AND diambilkah='sudah'");
+            PreparedStatement detail_buku_dipinjam = conn.prepareStatement("SELECT *, DATEDIFF(akhir_pinjam,CURRENT_DATE() ) AS pinjam_day_remaining FROM buku INNER JOIN pinjam_buku USING (id_buku) WHERE id_member=? AND diambilkah='sudah' AND (DATEDIFF(akhir_pinjam,CURRENT_DATE() ) >=1)");
             detail_buku_dipinjam.setInt(1, id_member);
 
             ResultSet rs4 = detail_buku_dipinjam.executeQuery();

@@ -5,13 +5,17 @@
  */
 package Controller_.Admin;
 
+import DAO_.x_Peminjaman;
 import java.io.IOException;
 import java.io.PrintWriter;
+import static java.lang.Math.abs;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 /**
  *
@@ -62,6 +66,39 @@ public class doAdmin_konfirmasiPengembalianBuku extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         processRequest(request, response);
+        HttpSession session = request.getSession(true);
+        String user_Admin = null;
+
+        Cookie[] cookies = request.getCookies();
+        for (Cookie cookie : cookies) {
+            if (cookie.getName().equals("usernameAdmin")) {
+                user_Admin = cookie.getValue();
+            }
+        }
+        if (user_Admin != null) {
+            String idPinjam_string = request.getParameter("idPinjam_");
+            int idPinjam_int = Integer.parseInt(idPinjam_string);
+            
+            x_Peminjaman cekDayRemain = new x_Peminjaman();
+            int dayRemain = Integer.parseInt(cekDayRemain.getDayRemaining(idPinjam_int));
+            int dendaPerhari = 2000;
+            
+            if(dayRemain<=0){
+                int besarDenda = abs(dayRemain*dendaPerhari);
+                System.out.println("DENDA = Rp. "+besarDenda);
+                
+                
+            }else if(dayRemain>=1){
+                System.out.println("TIDAK DENDA");
+            }
+
+            
+
+            session.setAttribute("flashMessageAdmin", "Toast.fire({icon: \"success\",title: \" cek DONE \"});");
+            response.sendRedirect(request.getContextPath() + "/admin/pengembalianBuku");
+        } else {
+            response.sendRedirect(request.getContextPath() + "/admin/login");
+        }
     }
 
     /**
