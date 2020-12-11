@@ -147,7 +147,7 @@ public class x_Peminjaman {
         try {
             Class.forName("com.mysql.jdbc.Driver");
             Connection conn = koneksi_db.initializeDatabase();
-            PreparedStatement ps = conn.prepareStatement("UPDATE pinjam_buku SET dikonfirmasikah='sudah' WHERE id_pinjam=?");
+            PreparedStatement ps = conn.prepareStatement("UPDATE pinjam_buku SET dikonfirmasikah='sudah', batalkah='disable' WHERE id_pinjam=?");
             ps.setInt(1, id_pinjam);
             ps.executeUpdate();
             conn.close();
@@ -162,7 +162,7 @@ public class x_Peminjaman {
         try {
             Class.forName("com.mysql.jdbc.Driver");
             Connection conn = koneksi_db.initializeDatabase();
-            PreparedStatement detail_buku_dipinjam = conn.prepareStatement("SELECT judul_buku, nama_member, id_pinjam, mulai_pinjam, akhir_pinjam FROM pinjam_buku JOIN buku ON pinjam_buku.id_buku=buku.id_buku JOIN member ON pinjam_buku.id_member=member.id_member ORDER BY mulai_pinjam DESC");
+            PreparedStatement detail_buku_dipinjam = conn.prepareStatement("SELECT judul_buku, nama_member, id_pinjam, mulai_pinjam, akhir_pinjam FROM pinjam_buku JOIN buku ON pinjam_buku.id_buku=buku.id_buku JOIN member ON pinjam_buku.id_member=member.id_member WHERE diambilkah='sudah' ORDER BY mulai_pinjam DESC");
 
             ResultSet rs4 = detail_buku_dipinjam.executeQuery();
             while (rs4.next()) {
@@ -205,7 +205,7 @@ public class x_Peminjaman {
         try {
             Class.forName("com.mysql.jdbc.Driver");
             Connection conn = koneksi_db.initializeDatabase();
-            PreparedStatement detail_buku_dipinjam = conn.prepareStatement("SELECT dikonfirmasikah, batalkah, judul_buku, nama_member, id_pinjam, mulai_pinjam, akhir_pinjam FROM pinjam_buku JOIN buku ON pinjam_buku.id_buku=buku.id_buku JOIN member ON pinjam_buku.id_member=member.id_member WHERE dikonfirmasikah='belum' AND batalkah='tidak' AND pinjam_buku.id_member=?");
+            PreparedStatement detail_buku_dipinjam = conn.prepareStatement("SELECT dikonfirmasikah, batalkah, judul_buku, nama_member, id_pinjam, mulai_pinjam, akhir_pinjam FROM pinjam_buku JOIN buku ON pinjam_buku.id_buku=buku.id_buku JOIN member ON pinjam_buku.id_member=member.id_member WHERE dikonfirmasikah='belum' AND pinjam_buku.id_member=?");
             detail_buku_dipinjam.setInt(1, id_member);
 
             ResultSet rs4 = detail_buku_dipinjam.executeQuery();
@@ -223,6 +223,20 @@ public class x_Peminjaman {
             Logger.getLogger(x_Peminjaman.class.getName()).log(Level.SEVERE, null, ex);
         }
         return detail_buku_yang_dipinjam;
+    }
+    
+    public void member_mengajukanPembatalan(int idPinjam_){
+        try {
+            Class.forName("com.mysql.jdbc.Driver");
+            Connection conn = koneksi_db.initializeDatabase();
+            PreparedStatement ps = conn.prepareStatement("UPDATE pinjam_buku SET batalkah='onProccess' WHERE id_pinjam=?");
+            ps.setInt(1, idPinjam_);
+            ps.executeUpdate();
+            conn.close();
+
+        } catch (Exception ex) {
+            Logger.getLogger(x_Peminjaman.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
     
     

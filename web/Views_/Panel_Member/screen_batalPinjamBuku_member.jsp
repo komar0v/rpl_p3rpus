@@ -71,11 +71,13 @@
                                                         }%>
 
                                                     <% if (buku_dipinjam.getBatalkah().equals("tidak")) {
-                                                            out.print("<td><button onclick=\"window.location.href ='"+request.getContextPath()+"/member/doMember_mintaDibatalkan?idPinjam_="+buku_dipinjam.getId_pinjam()+"'\" type=\"button\" class=\"btn btn-relief-primary mr-1 mb-1\">Batal Pinjam</button></td>");
-                                                        } else if (buku_dipinjam.getBatalkah().equals("onProcess")) {
+                                                            out.print("<td><button onclick=\"window.location.href ='"+request.getContextPath()+"/member/doMember_mintaDibatalkanPinjam?idPinjam_="+buku_dipinjam.getId_pinjam()+"'\" type=\"button\" class=\"btn btn-relief-primary mr-1 mb-1\">Batal Pinjam</button></td>");
+                                                        } else if (buku_dipinjam.getBatalkah().equals("onProccess")) {
                                                             out.print("<td><div class=\"badge badge-pill badge-danger\">sedang menunggu konfirmasi</div></td>");
-                                                        }else{
+                                                        }else if (buku_dipinjam.getBatalkah().equals("ya")){
                                                             out.print("<td><div class=\"badge badge-pill badge-success\">Buku sudah dibatalkan pinjamnya</div></td>");
+                                                        }else{
+                                                            out.print("<td><div class=\"badge badge-pill badge-danger\">tidak bisa dibatalkan</div></td>");
                                                         }
                                                     %>
 
