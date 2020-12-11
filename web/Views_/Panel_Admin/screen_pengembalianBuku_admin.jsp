@@ -54,6 +54,7 @@
                                         <td><%= permintaanPinjam.getAkhir_pinjam()%></td>
                                         <td>
                                             <form action="<%=request.getContextPath() %>/admin/doAdmin_konfirmasiPengembalianBuku" method="POST" accept-charset="utf-8">
+                                                <input type="hidden" name="idMember_" value="<%= permintaanPinjam.getId_member()%>" >
                                                 <input type="hidden" name="idPinjam_" value="<%= permintaanPinjam.getId_pinjam()%>" >
                                                 <button type="submit" class="btn btn-success btn-sm"><i class="fas fa-check-circle"></i> Buku dikembalikan</button>
                                             </form>

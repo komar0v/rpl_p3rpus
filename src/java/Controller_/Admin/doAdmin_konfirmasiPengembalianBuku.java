@@ -9,6 +9,7 @@ import DAO_.x_Peminjaman;
 import java.io.IOException;
 import java.io.PrintWriter;
 import static java.lang.Math.abs;
+import java.util.Random;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.Cookie;
@@ -78,14 +79,31 @@ public class doAdmin_konfirmasiPengembalianBuku extends HttpServlet {
         if (user_Admin != null) {
             String idPinjam_string = request.getParameter("idPinjam_");
             int idPinjam_int = Integer.parseInt(idPinjam_string);
+            
+            String idMember_string = request.getParameter("idMember_");
+            int idMember_int = Integer.parseInt(idMember_string);
 
             x_Peminjaman cekDayRemain = new x_Peminjaman();
             int dayRemain = Integer.parseInt(cekDayRemain.getDayRemaining(idPinjam_int));
             int dendaPerhari = 2000;
 
             if (dayRemain <= 0) {
+                Random rand = new Random();
+                int idDenda_6digit = 0;
+                int idDenda_fix = 0;
+                for (int i = 1; i <= 10; i++) {
+                    idDenda_6digit = rand.nextInt((99999 - 1010) + 10) + 250;
+                    String str_idPinjam_8digit = Integer.toString(idDenda_6digit) + "2020";
+                    idDenda_fix = Integer.parseInt(str_idPinjam_8digit);
+                }
                 int besarDenda = abs(dayRemain * dendaPerhari);
                 System.out.println("DENDA = Rp. " + besarDenda);
+                
+                x_Peminjaman sudah_dikembalikanDENGANDENDA = new x_Peminjaman();
+                sudah_dikembalikanDENGANDENDA.admin_konfirmasiPengembalian_WITH_DENDA(idDenda_fix, idPinjam_int, idMember_int, besarDenda);
+                
+                session.setAttribute("flashMessageAdmin", "Toast.fire({icon: \"success\",title: \" Dikonfirmasi!, Member Kena denda \"});");
+                response.sendRedirect(request.getContextPath() + "/admin/showDenda");
 
             } else if (dayRemain >= 1) {
                 System.out.println("TIDAK DENDA");

@@ -42,8 +42,24 @@ public class x_Peminjaman {
         return day_remain;
     }
     
-    public void admin_konfirmasiPengembalian_WITH_DENDA(){
-        
+    public void admin_konfirmasiPengembalian_WITH_DENDA(int id_denda, int id_pinjam, int id_member, int besar_denda){
+        try {
+            Class.forName("com.mysql.jdbc.Driver");
+            Connection conn = koneksi_db.initializeDatabase();
+            PreparedStatement ps_1 = conn.prepareStatement("UPDATE pinjam_buku SET dikembalikan='sudah' WHERE id_pinjam=?");
+            ps_1.setInt(1, id_pinjam);
+            ps_1.executeUpdate();
+            
+            PreparedStatement ps_2 = conn.prepareStatement("INSERT INTO ");
+           
+            ps_2.setInt(1, id_pinjam);
+            ps_2.executeUpdate();
+            
+            conn.close();
+
+        } catch (Exception ex) {
+            Logger.getLogger(x_Peminjaman.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
     
     public void admin_konfirmasiPengembalian_TANPA_DENDA(int id_pinjam){
@@ -297,12 +313,13 @@ public class x_Peminjaman {
         try {
             Class.forName("com.mysql.jdbc.Driver");
             Connection conn = koneksi_db.initializeDatabase();
-            PreparedStatement detail_buku_dipinjam = conn.prepareStatement("SELECT judul_buku, nama_member, id_pinjam, mulai_pinjam, akhir_pinjam FROM pinjam_buku JOIN buku ON pinjam_buku.id_buku=buku.id_buku JOIN member ON pinjam_buku.id_member=member.id_member WHERE diambilkah='sudah' AND dikembalikan='belum' ORDER BY mulai_pinjam DESC");
+            PreparedStatement detail_buku_dipinjam = conn.prepareStatement("SELECT judul_buku, member.id_member, nama_member, id_pinjam, mulai_pinjam, akhir_pinjam FROM pinjam_buku JOIN buku ON pinjam_buku.id_buku=buku.id_buku JOIN member ON pinjam_buku.id_member=member.id_member WHERE diambilkah='sudah' AND dikembalikan='belum' ORDER BY mulai_pinjam DESC");
 
             ResultSet rs4 = detail_buku_dipinjam.executeQuery();
             while (rs4.next()) {
                 M_pinjamBuku buku_dipinjam = new M_pinjamBuku();
                 buku_dipinjam.setId_pinjam(rs4.getInt("id_pinjam"));
+                buku_dipinjam.setId_member(rs4.getInt("id_member"));
                 buku_dipinjam.setNama_member(rs4.getString("nama_member"));
                 buku_dipinjam.setJudul_buku(rs4.getString("judul_buku"));
                 buku_dipinjam.setMulai_pinjam(rs4.getString("mulai_pinjam"));
