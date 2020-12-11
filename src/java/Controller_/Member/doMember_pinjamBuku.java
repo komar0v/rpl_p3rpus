@@ -100,7 +100,7 @@ public class doMember_pinjamBuku extends HttpServlet {
                 int idPinjam_8digit = 0;
                 int idPinjam_fix = 0;
                 for (int i = 1; i <= 10; i++) {
-                    idPinjam_8digit = rand.nextInt((9999 - 1000) + 1) + 10;
+                    idPinjam_8digit = rand.nextInt((9999 - 1010) + 10) + 150;
                     String str_idPinjam_8digit = Integer.toString(idPinjam_8digit) + "2020";
                     idPinjam_fix = Integer.parseInt(str_idPinjam_8digit);
                 }
