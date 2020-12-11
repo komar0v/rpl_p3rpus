@@ -28,12 +28,12 @@
                                         <div class="row">
                                             <div class="col-sm-12 col-12">
                                                 <div class="text-bold-600 font-medium-2 mb-1">
-                                                    Kata Kunci
+                                                    Cari Judul Buku
                                                 </div>
                                                 <form action="<%=request.getContextPath()%>/member/cariBuku" method="GET" accept-charset="utf-8">
                                                     <fieldset class="form-group position-relative has-icon-left">
 
-                                                        <input type="text" class="form-control form-control-lg" name="keyword_cari" id="keyword_cari" placeholder="cari buku apa?">
+                                                        <input type="text" class="form-control form-control-lg" name="keyword_cari" id="keyword_cari" placeholder="cari judul buku apa?">
                                                         <div class="form-control-position">
                                                             <i class="feather icon-search"></i>
                                                         </div>

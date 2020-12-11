@@ -45,7 +45,6 @@
                                             <thead>
                                                 <tr>
                                                     <th>Judul Buku</th>
-                                                    <th>Batas Peminjaman</th>
                                                     <th>Status</th>
 
                                                 </tr>
@@ -61,7 +60,6 @@
 
                                                 <tr>
                                                     <td><%= buku_dipinjam.getJudul_buku()%></td>
-                                                    <td><%= buku_dipinjam.getAkhir_pinjam()%></td>
 
                                                     
 

@@ -40,13 +40,15 @@
                                 </thead>
                                 <tbody>
                                     <% ArrayList<M_akunMember> listMembers = (ArrayList<M_akunMember>) request.getAttribute("list_members");
-                                        for (M_akunMember members_ : listMembers) {
+                                    int i=0;    
+                                    for (M_akunMember members_ : listMembers) {
+                                        i=i+1;
                                     %>
                                     <tr>
                                         <td><%= members_.getNama_member()%></td>
                                         <td>
-                                            <button type="button" data-toggle="modal" data-target="#modal-sm2" class="btn btn-danger btn-sm"><i class="fas fa-trash-alt"></i> Hapus Member</button>
-                                            <div class="modal fade" id="modal-sm2">
+                                            <button type="button" data-toggle="modal" data-target="#modal-sm2_<%=i %>" class="btn btn-danger btn-sm"><i class="fas fa-trash-alt"></i> Hapus Member</button>
+                                            <div class="modal fade" id="modal-sm2_<%=i %>">
                                                 <div class="modal-dialog modal-sm">
                                                     <div class="modal-content">
                                                         <div class="modal-header">

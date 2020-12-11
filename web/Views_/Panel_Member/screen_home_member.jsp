@@ -77,7 +77,7 @@
                             <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" role="document">
                                 <div class="modal-content">
                                     <div class="modal-header bg-success white">
-                                        <h5 class="modal-title" id="myModalLabel160">Cari Buku</h5>
+                                        <h5 class="modal-title" id="myModalLabel160">Cari Judul Buku</h5>
                                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                             <span aria-hidden="true">&times;</span>
                                         </button>
@@ -85,7 +85,7 @@
                                     <div class="modal-body">
                                         <div class="form-label-group position-relative has-icon-left">
                                             <form action="<%=request.getContextPath()%>/member/cariBuku" method="GET" accept-charset="utf-8">
-                                                <input type="text" name="keyword_cari" id="keyword_cari" class="form-control" placeholder="Cari Buku Apa?">
+                                                <input type="text" name="keyword_cari" id="keyword_cari" class="form-control" placeholder="Cari Judul Buku Apa?">
                                                 <div class="form-control-position">
                                                     <i class="fa fa-search"></i>
                                                 </div>
