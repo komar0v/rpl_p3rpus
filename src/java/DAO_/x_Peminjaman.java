@@ -27,7 +27,7 @@ public class x_Peminjaman {
         try {
             Class.forName("com.mysql.jdbc.Driver");
             Connection conn = koneksi_db.initializeDatabase();
-            PreparedStatement ps = conn.prepareStatement("INSERT INTO pinjam_buku VALUES (?,?,?,?,(mulai_pinjam + INTERVAL 14 DAY),?,?,?)");
+            PreparedStatement ps = conn.prepareStatement("INSERT INTO pinjam_buku VALUES (?,?,?,?,(mulai_pinjam + INTERVAL 14 DAY),?,?,?,?)");
             ps.setInt(1, pinjem.getId_pinjam());
             ps.setInt(2, pinjem.getId_member());
             ps.setString(3, pinjem.getId_buku());
@@ -35,6 +35,7 @@ public class x_Peminjaman {
             ps.setString(5, pinjem.getSudah_diambil());
             ps.setString(6, pinjem.getDikonfirmasikah());
             ps.setString(7, pinjem.getBatalkah());
+            ps.setString(8, pinjem.getDikembalikan());
             ps.executeUpdate();
             conn.close();
 

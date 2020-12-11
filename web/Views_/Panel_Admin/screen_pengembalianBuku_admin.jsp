@@ -52,7 +52,12 @@
                                         <td><%= permintaanPinjam.getJudul_buku()%></td>
                                         <td><%= permintaanPinjam.getMulai_pinjam()%></td>
                                         <td><%= permintaanPinjam.getAkhir_pinjam()%></td>
-                                        <td><button onclick="window.location.href = '<%=request.getContextPath()%>/admin/doAdmin_konfirmasiPengembalianBuku?idPinjam_=<%= permintaanPinjam.getId_pinjam()%>'" type="button" class="btn btn-success btn-sm"><i class="fas fa-check-circle"></i> Buku dikembalikan</button></td>
+                                        <td>
+                                            <form action="<%=request.getContextPath() %>" method="POST" accept-charset="utf-8">
+                                                <input type="hidden" name="idPinjam_" value="<%= permintaanPinjam.getId_pinjam()%>" >
+                                                <button type="submit" class="btn btn-success btn-sm"><i class="fas fa-check-circle"></i> Buku dikembalikan</button>
+                                            </form>
+                                        </td>
                                         
                                     </tr>
                                     <%}%> 

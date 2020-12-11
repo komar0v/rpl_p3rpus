@@ -16,8 +16,16 @@ public class M_pinjamBuku {
     String batalkah;
     String mulai_pinjam, akhir_pinjam, pinjam_day_remaining;
     String judul_buku;
-    String sudah_diambil, dikonfirmasikah;
+    String sudah_diambil, dikonfirmasikah, dikembalikan;
 
+    public String getDikembalikan() {
+        return dikembalikan;
+    }
+
+    public void setDikembalikan(String dikembalikan) {
+        this.dikembalikan = dikembalikan;
+    }
+  
     public String getBatalkah() {
         return batalkah;
     }
