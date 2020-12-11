@@ -91,6 +91,57 @@ public class x_Peminjaman {
         return detail_buku_yang_dipinjam;
     }
     
+    public static List<M_pinjamBuku> getSemuaPeminjaman_yangsudah_dikonfirmasi() {
+        ArrayList<M_pinjamBuku> detail_buku_yang_dipinjam = new ArrayList<M_pinjamBuku>();
+        try {
+            Class.forName("com.mysql.jdbc.Driver");
+            Connection conn = koneksi_db.initializeDatabase();
+            PreparedStatement detail_buku_dipinjam = conn.prepareStatement("SELECT judul_buku, nama_member, id_pinjam, mulai_pinjam, akhir_pinjam FROM pinjam_buku JOIN buku ON pinjam_buku.id_buku=buku.id_buku JOIN member ON pinjam_buku.id_member=member.id_member WHERE dikonfirmasikah='sudah' AND diambilkah='belum'");
+
+            ResultSet rs4 = detail_buku_dipinjam.executeQuery();
+            while (rs4.next()) {
+                M_pinjamBuku buku_dipinjam = new M_pinjamBuku();
+                buku_dipinjam.setId_pinjam(rs4.getInt("id_pinjam"));
+                buku_dipinjam.setNama_member(rs4.getString("nama_member"));
+                buku_dipinjam.setJudul_buku(rs4.getString("judul_buku"));
+                buku_dipinjam.setMulai_pinjam(rs4.getString("mulai_pinjam"));
+                detail_buku_yang_dipinjam.add(buku_dipinjam);
+            }
+            
+        } catch (Exception ex) {
+            Logger.getLogger(x_Peminjaman.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return detail_buku_yang_dipinjam;
+    }
+    
+    public void admin_konfirmasiAmbil_SUDAH_DIAMBIL(int id_pinjam){
+        try {
+            Class.forName("com.mysql.jdbc.Driver");
+            Connection conn = koneksi_db.initializeDatabase();
+            PreparedStatement ps = conn.prepareStatement("UPDATE pinjam_buku SET diambilkah='sudah' WHERE id_pinjam=?");
+            ps.setInt(1, id_pinjam);
+            ps.executeUpdate();
+            conn.close();
+
+        } catch (Exception ex) {
+            Logger.getLogger(x_Peminjaman.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+    public void admin_konfirmasiAmbil_BATAL_DIAMBIL(int id_pinjam){
+        try {
+            Class.forName("com.mysql.jdbc.Driver");
+            Connection conn = koneksi_db.initializeDatabase();
+            PreparedStatement ps = conn.prepareStatement("UPDATE pinjam_buku SET diambilkah='batal' WHERE id_pinjam=?");
+            ps.setInt(1, id_pinjam);
+            ps.executeUpdate();
+            conn.close();
+
+        } catch (Exception ex) {
+            Logger.getLogger(x_Peminjaman.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
     public void admin_konfirmasiPinjam(int id_pinjam){
         try {
             Class.forName("com.mysql.jdbc.Driver");
@@ -104,4 +155,6 @@ public class x_Peminjaman {
             Logger.getLogger(x_Peminjaman.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
+    
+    
 }

@@ -166,7 +166,7 @@
                                 </a>
                                 <ul class="nav nav-treeview">
                                     <li class="nav-item">
-                                        <a href="#" class="nav-link">
+                                        <a href="<%=request.getContextPath()%>/admin/confirmAmbil" class="nav-link">
                                             <i class="fas fa-hand-holding nav-icon"></i>
                                             <p>Pengambilan</p>
                                         </a>
