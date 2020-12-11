@@ -70,6 +70,33 @@ public class x_Peminjaman {
         return detail_buku_yang_dipinjam;
     }
     
+    public static List<M_pinjamBuku> getBuku_yang_mauDiperpanjang(int id_member) {
+        ArrayList<M_pinjamBuku> detail_buku_yang_dipinjam = new ArrayList<M_pinjamBuku>();
+        try {
+            Class.forName("com.mysql.jdbc.Driver");
+            Connection conn = koneksi_db.initializeDatabase();
+            PreparedStatement detail_buku_dipinjam = conn.prepareStatement("SELECT *, DATEDIFF(akhir_pinjam,CURRENT_DATE() ) AS pinjam_day_remaining FROM buku INNER JOIN pinjam_buku USING (id_buku) WHERE id_member=? AND diambilkah='sudah'");
+            detail_buku_dipinjam.setInt(1, id_member);
+
+            ResultSet rs4 = detail_buku_dipinjam.executeQuery();
+            while (rs4.next()) {
+                M_pinjamBuku buku_dipinjam = new M_pinjamBuku();
+                buku_dipinjam.setId_pinjam(rs4.getInt("id_pinjam"));
+                buku_dipinjam.setId_buku(rs4.getString("id_buku"));
+                buku_dipinjam.setJudul_buku(rs4.getString("judul_buku"));
+                buku_dipinjam.setAkhir_pinjam(rs4.getString("akhir_pinjam"));
+                buku_dipinjam.setSudah_diambil(rs4.getString("diambilkah"));
+                buku_dipinjam.setDikonfirmasikah(rs4.getString("dikonfirmasikah"));
+                buku_dipinjam.setPinjam_day_remaining(rs4.getString("pinjam_day_remaining"));
+                detail_buku_yang_dipinjam.add(buku_dipinjam);
+            }
+            
+        } catch (Exception ex) {
+            Logger.getLogger(x_Peminjaman.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return detail_buku_yang_dipinjam;
+    }
+    
     public static List<M_pinjamBuku> getSemuaPeminjaman() {
         ArrayList<M_pinjamBuku> detail_buku_yang_dipinjam = new ArrayList<M_pinjamBuku>();
         try {
@@ -226,7 +253,7 @@ public class x_Peminjaman {
         try {
             Class.forName("com.mysql.jdbc.Driver");
             Connection conn = koneksi_db.initializeDatabase();
-            PreparedStatement psJml_bukuDipinjam = conn.prepareStatement("SELECT COUNT(*) AS jumlah_buku_dipinjam FROM pinjam_buku WHERE id_member=?");
+            PreparedStatement psJml_bukuDipinjam = conn.prepareStatement("SELECT COUNT(*) AS jumlah_buku_dipinjam FROM pinjam_buku WHERE id_member=? AND diambilkah='sudah'");
             psJml_bukuDipinjam.setInt(1, id_member);
             ResultSet rs4 = psJml_bukuDipinjam.executeQuery();
 
@@ -270,6 +297,20 @@ public class x_Peminjaman {
             Class.forName("com.mysql.jdbc.Driver");
             Connection conn = koneksi_db.initializeDatabase();
             PreparedStatement ps = conn.prepareStatement("UPDATE pinjam_buku SET batalkah='onProccess' WHERE id_pinjam=?");
+            ps.setInt(1, idPinjam_);
+            ps.executeUpdate();
+            conn.close();
+
+        } catch (Exception ex) {
+            Logger.getLogger(x_Peminjaman.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+    public void member_perpanjangPinjam(int idPinjam_){
+        try {
+            Class.forName("com.mysql.jdbc.Driver");
+            Connection conn = koneksi_db.initializeDatabase();
+            PreparedStatement ps = conn.prepareStatement("UPDATE pinjam_buku SET akhir_pinjam=(akhir_pinjam + INTERVAL 7 DAY) WHERE id_pinjam=?");
             ps.setInt(1, idPinjam_);
             ps.executeUpdate();
             conn.close();

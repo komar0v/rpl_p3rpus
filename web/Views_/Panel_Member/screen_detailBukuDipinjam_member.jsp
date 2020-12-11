@@ -86,14 +86,14 @@
                                                             } else if (sudah_diambil.equals("batal")) {
                                                                 out.print("<td><div class=\"badge badge-pill badge-danger\">Buku batal diambil</div></td>");
                                                             } else {
-                                                                out.print("<td><strong>Mulai Pinjam : " + mulai_pinjam + "<br>Akhir Pinjam : " + akhir_pinjam +"</strong></td>");
+                                                                out.print("<td><strong>Mulai Pinjam : " + mulai_pinjam + "<br>Akhir Pinjam : " + akhir_pinjam + "</strong></td>");
                                                                 out.print("<td><strong>Masa Berlaku : " + pinjam_day_remaining + " hari lagi</strong></td>");
                                                             }%>
 
 
                                                     </tbody>
                                                 </table>
-                                                            <% if(sudah_diambil.equals("sudah")){ %>
+                                                <% if (sudah_diambil.equals("sudah")) { %>
                                                 <form action="/member/doMember_kembalikanPinjamBuku" method="POST" accept-charset="utf-8">
                                                     <div class="col-md-8 offset-md-4">
                                                         <div class="col-md-6 col-12 mb-1">
@@ -105,7 +105,7 @@
 
                                                     </div>
                                                 </form>
-                                                            <%}%>
+                                                <%}%>
                                             </div>
                                         </div>
                                     </div>

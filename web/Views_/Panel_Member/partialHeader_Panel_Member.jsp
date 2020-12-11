@@ -106,7 +106,7 @@
 
                     <li class=" nav-item"><a href="<%=request.getContextPath()%>/member/pinjamBuku"><i class="fa fa-book"></i><span class="menu-title">Pinjam Buku</span></a></li>
 
-                    <li class=" nav-item"><a href="#"><i class="fa fa-clock-o"></i><span class="menu-title">Perpanjang Pinjam</span></a></li>
+                    <li class=" nav-item"><a href="<%=request.getContextPath()%>/member/perpanjangPeminjaman"><i class="fa fa-clock-o"></i><span class="menu-title">Perpanjang Pinjam</span></a></li>
 
                     <li class=" nav-item"><a href="<%=request.getContextPath()%>/member/daftarPinjam"><i class="fa fa-list-ol"></i><span class="menu-title">Daftar Pinjam</span></a></li>
 
