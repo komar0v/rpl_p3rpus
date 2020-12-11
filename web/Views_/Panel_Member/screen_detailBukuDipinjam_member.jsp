@@ -93,19 +93,6 @@
 
                                                     </tbody>
                                                 </table>
-                                                <% if (sudah_diambil.equals("sudah")) { %>
-                                                <form action="/member/doMember_kembalikanPinjamBuku" method="POST" accept-charset="utf-8">
-                                                    <div class="col-md-8 offset-md-4">
-                                                        <div class="col-md-6 col-12 mb-1">
-                                                            <h5 class="text-bold-500">Pilih tanggal kebalikan buku</h5>
-                                                            <input required type='text' name="tanngalKembalikanBuku" class="form-control format-picker">
-                                                            <input required type="hidden" class="form-control" name="kodeBuku" value="<% out.print(id_buku);%>"><br><br>
-                                                            <button type="submit" class="text-center btn btn-primary mr-1 mb-1">Kembalikan Buku</button>
-                                                        </div>
-
-                                                    </div>
-                                                </form>
-                                                <%}%>
                                             </div>
                                         </div>
                                     </div>
