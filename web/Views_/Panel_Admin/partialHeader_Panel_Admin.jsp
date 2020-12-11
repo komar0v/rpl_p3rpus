@@ -173,7 +173,7 @@
                                     </li>
 
                                     <li class="nav-item">
-                                        <a href="#" class="nav-link">
+                                        <a href="<%=request.getContextPath()%>/admin/confirmPembatalan" class="nav-link">
                                             <i class="far fa-times-circle nav-icon"></i>
                                             <p>Pembatalan</p>
                                         </a>
