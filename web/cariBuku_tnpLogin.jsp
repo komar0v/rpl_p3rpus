@@ -81,15 +81,15 @@
                 <div class="container">
 
                     <% ArrayList<M_buku> listBuku_hasilCari = (ArrayList<M_buku>) request.getAttribute("hasilCariBuku_tnpLogin");
-                        if (listBuku_hasilCari.isEmpty() == true){
+                        if (listBuku_hasilCari.isEmpty() == true) {
                             out.print("<h4 class=\"font-weight-normal text-muted pb-3\">BUKU TIDAK ADA</h4>");
                         }
-                    
+
                         for (M_buku buku_ : listBuku_hasilCari) {
                     %>
                     <div class="post-entry-2 d-flex">
                         <div class="contents order-md-1 pl-0">
-                            <h2><%= buku_.getJudul_buku() %></h2>
+                            <h2><%= buku_.getJudul_buku()%></h2>
                             <div class="post-meta"><span class="d-block">Pengarang &bull; <%= buku_.getPengarang_buku()%></span><span class="date-read">Penerbit &bull; <%= buku_.getPenerbit_buku()%> diterbitkan tahun <%= buku_.getTahunterbit_buku()%></span></div>
                             <br><br>
                         </div>
@@ -131,7 +131,7 @@
                                 <h4 class="modal-title" id="exampleModalLabel">LOGIN</h4>
                             </div>
                             <div class="modal-body">
-                                <form action="http://localhost:8080/rpl_perpus/index.php/Member_Panel/auth_member" method="post" accept-charset="utf-8">
+                                <form action="./member/doMemberLogin" method="post" accept-charset="utf-8">
                                     <div class="form-group">
                                         <label for="Name">email</label>
                                         <input type="email" class="form-control" name="emailMember" id="emailMember" placeholder="email">
@@ -146,28 +146,12 @@
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-light" data-dismiss="modal">Close</button>
                                 <button type="submit" class="btn btn-success">Login</button>
-                                </form>      </div>
+                                </form>      
+                            </div>
                         </div>
                     </div>
                 </div>
 
-                <div class="modal fade" id="modalCariBuku" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                    <div class="modal-dialog" role="document">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h4 class="modal-title" id="exampleModalLabel">Cari Buku</h4>
-                            </div>
-                            <div class="modal-body">
-                                <form action="http://localhost:8080/rpl_perpus/Pencarian_Buku">
-                                    <div class="text-center form-group">
-                                        <input type="text" class="form-control" name="cari_buku" id="cari_buku" placeholder="Cari Buku apa?">
-                                        <button type="submit" class="btn btn-rounded btn-outline-danger"><span class="mdi mdi-magnify"></span> Cari buku</button>
-                                    </div>
-                                </form>
-                            </div>
-                        </div>
-                    </div>
-                </div>
             </div>
         </div>
 

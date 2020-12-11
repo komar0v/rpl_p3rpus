@@ -145,7 +145,7 @@
                                 <h4 class="modal-title" id="exampleModalLabel">LOGIN</h4>
                             </div>
                             <div class="modal-body">
-                                <form action="#" method="post" accept-charset="utf-8">
+                                <form action="./member/doMemberLogin" method="post" accept-charset="utf-8">
                                     <div class="form-group">
                                         <label for="Name">email</label>
                                         <input type="email" class="form-control" name="emailMember" id="emailMember" placeholder="email">
@@ -160,7 +160,8 @@
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-light" data-dismiss="modal">Close</button>
                                 <button type="submit" class="btn btn-success">Login</button>
-                                </form>      </div>
+                                </form>      
+                            </div>
                         </div>
                     </div>
                 </div>
