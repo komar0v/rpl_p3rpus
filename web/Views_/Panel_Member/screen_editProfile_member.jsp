@@ -123,7 +123,7 @@
                                                 </div>
                                                 <div class="col-md-6 col-12">
                                                     <div class="form-label-group">
-                                                        <button type="button" class="btn btn-info mr-1 mb-1"><i class="feather icon-lock"></i> Klik disini untuk Ganti Password</button>
+                                                        <button type="button" onclick="window.location.href = '<%=request.getContextPath()%>/member/gantiPassword'" class="btn btn-info mr-1 mb-1"><i class="feather icon-lock"></i> Klik disini untuk Ganti Password</button>
                                                     </div>
                                                 </div>
 

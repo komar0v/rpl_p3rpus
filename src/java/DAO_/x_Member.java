@@ -138,4 +138,21 @@ public class x_Member {
             Logger.getLogger(x_Member.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
+    
+    public void updatePasswordMember(int id_member, String pass_baru) {
+        try {
+            Class.forName("com.mysql.jdbc.Driver");
+            Connection conn = koneksi_db.initializeDatabase();
+            PreparedStatement ps = conn.prepareStatement("UPDATE member SET password_member =? WHERE id_member=?");
+
+            ps.setString(1, pass_baru);
+            ps.setInt(2, id_member);
+            
+            ps.executeUpdate();
+            conn.close();
+
+        } catch (Exception ex) {
+            Logger.getLogger(x_Member.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
 }
