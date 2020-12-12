@@ -61,10 +61,10 @@
 
                                                 <tr>
                                                     <td><%= detailDenda.getJudul_buku()%></td>
-                                                    <td><%= detailDenda.getBesar_denda()%></td>
+                                                    <td>Rp. <%= detailDenda.getBesar_denda()%></td>
 
                                                     <% if (detailDenda.getDibayarkah().equals("belum")) {
-                                                            out.print("<td><div class=\"badge badge-pill badge-danger\">BELUM DIBAYAR</div></td>");
+                                                            out.print("<td><div class=\"badge badge-pill badge-danger\"><strong>BELUM DIBAYAR</strong></div></td>");
                                                         }%>
 
                                                 </tr>

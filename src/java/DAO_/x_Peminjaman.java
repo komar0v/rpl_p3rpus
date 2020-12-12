@@ -129,7 +129,7 @@ public class x_Peminjaman {
         try {
             Class.forName("com.mysql.jdbc.Driver");
             Connection conn = koneksi_db.initializeDatabase();
-            PreparedStatement member_denda = conn.prepareStatement("SELECT judul_buku, id_denda, besar_denda, pinjam_buku.id_pinjam FROM pinjam_buku JOIN buku ON pinjam_buku.id_buku=buku.id_buku JOIN member ON pinjam_buku.id_member=member.id_member JOIN denda WHERE dikembalikan='sudah' AND dibayarkah='belum' AND pinjam_buku.id_member=?");
+            PreparedStatement member_denda = conn.prepareStatement("SELECT dibayarkah, judul_buku, id_denda, besar_denda, pinjam_buku.id_pinjam FROM pinjam_buku JOIN buku ON pinjam_buku.id_buku=buku.id_buku JOIN member ON pinjam_buku.id_member=member.id_member JOIN denda WHERE dikembalikan='sudah' AND dibayarkah='belum' AND pinjam_buku.id_member=?");
             member_denda.setInt(1, id_member);
             
             ResultSet rs4 = member_denda.executeQuery();
@@ -139,6 +139,7 @@ public class x_Peminjaman {
                 detailDenda.setId_denda(rs4.getInt("id_denda"));
                 detailDenda.setBesar_denda(rs4.getString("besar_denda"));
                 detailDenda.setJudul_buku(rs4.getString("judul_buku"));
+                detailDenda.setDibayarkah(rs4.getString("dibayarkah"));
                 list_semuaDenda.add(detailDenda);
             }
 
@@ -382,7 +383,7 @@ public class x_Peminjaman {
         try {
             Class.forName("com.mysql.jdbc.Driver");
             Connection conn = koneksi_db.initializeDatabase();
-            PreparedStatement psJml_bukuDipinjam = conn.prepareStatement("SELECT COUNT(*) AS jumlah_buku_dipinjam FROM pinjam_buku WHERE id_member=? AND diambilkah='sudah'");
+            PreparedStatement psJml_bukuDipinjam = conn.prepareStatement("SELECT COUNT(*) AS jumlah_buku_dipinjam FROM pinjam_buku WHERE id_member=? AND diambilkah='sudah' AND dikembalikan='belum'");
             psJml_bukuDipinjam.setInt(1, id_member);
             ResultSet rs4 = psJml_bukuDipinjam.executeQuery();
 
