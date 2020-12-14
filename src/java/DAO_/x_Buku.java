@@ -118,7 +118,7 @@ public class x_Buku {
         try {
             Class.forName("com.mysql.jdbc.Driver");
             Connection conn = koneksi_db.initializeDatabase();
-            PreparedStatement ps = conn.prepareStatement("INSERT INTO buku VALUES (?,?,?,?,?,?,?)");
+            PreparedStatement ps = conn.prepareStatement("INSERT INTO buku VALUES (?,?,?,?,?,?,?,'tidak')");
             ps.setString(1, buku_.getId_buku());
             ps.setString(2, buku_.getJudul_buku());
             ps.setString(3, buku_.getPengarang_buku());
