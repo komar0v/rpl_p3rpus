@@ -399,25 +399,6 @@ public class x_Peminjaman {
         return detail_buku_yang_dipinjam;
     }
 
-    public String getJumlahBuku_dipinjamMember(int id_member) {
-        int jumlah_buku_dipinjam = 0;
-        try {
-            Class.forName("com.mysql.jdbc.Driver");
-            Connection conn = koneksi_db.initializeDatabase();
-            PreparedStatement psJml_bukuDipinjam = conn.prepareStatement("SELECT COUNT(*) AS jumlah_buku_dipinjam FROM pinjam_buku WHERE id_member=? AND diambilkah='sudah' AND dikembalikan='belum'");
-            psJml_bukuDipinjam.setInt(1, id_member);
-            ResultSet rs4 = psJml_bukuDipinjam.executeQuery();
-
-            while (rs4.next()) {
-                jumlah_buku_dipinjam = rs4.getInt("jumlah_buku_dipinjam");
-            }
-
-        } catch (Exception ex) {
-            Logger.getLogger(x_Member.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        return Integer.toString(jumlah_buku_dipinjam);
-    }
-
     public static List<M_pinjamBuku> member_getBuku_yang_mauDIBATALKAN(int id_member) {
         ArrayList<M_pinjamBuku> detail_buku_yang_dipinjam = new ArrayList<M_pinjamBuku>();
         try {
@@ -503,6 +484,128 @@ public class x_Peminjaman {
             Logger.getLogger(x_Peminjaman.class.getName()).log(Level.SEVERE, null, ex);
         }
         return detail_buku_yang_dipinjam;
+    }
+    
+    //--------------------------------------------------------------------------------------------------------------
+    
+    public String getJumlahBuku_dipinjamMember(int id_member) {
+        int jumlah_buku_dipinjam = 0;
+        try {
+            Class.forName("com.mysql.jdbc.Driver");
+            Connection conn = koneksi_db.initializeDatabase();
+            PreparedStatement psJml_bukuDipinjam = conn.prepareStatement("SELECT COUNT(*) AS jumlah_buku_dipinjam FROM pinjam_buku WHERE id_member=? AND diambilkah='sudah' AND dikembalikan='belum'");
+            psJml_bukuDipinjam.setInt(1, id_member);
+            ResultSet rs4 = psJml_bukuDipinjam.executeQuery();
+
+            while (rs4.next()) {
+                jumlah_buku_dipinjam = rs4.getInt("jumlah_buku_dipinjam");
+            }
+
+        } catch (Exception ex) {
+            Logger.getLogger(x_Member.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return Integer.toString(jumlah_buku_dipinjam);
+    }
+    
+    public String getBanyaknyaDendaMember(int id_member) {
+        int jumlah_DendaMember = 0;
+        try {
+            Class.forName("com.mysql.jdbc.Driver");
+            Connection conn = koneksi_db.initializeDatabase();
+            PreparedStatement psJmlDenda = conn.prepareStatement("SELECT COUNT(*) AS banyaknyaDendaMember FROM denda INNER JOIN pinjam_buku USING (id_pinjam) JOIN buku ON buku.id_buku=pinjam_buku.id_buku WHERE dendakah='ya' AND dibayarkah='belum' AND pinjam_buku.id_member=?");
+            psJmlDenda.setInt(1, id_member);
+            
+            ResultSet rs4 = psJmlDenda.executeQuery();
+
+            while (rs4.next()) {
+                jumlah_DendaMember = rs4.getInt("banyaknyaDendaMember");
+            }
+
+        } catch (Exception ex) {
+            Logger.getLogger(x_Buku.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return Integer.toString(jumlah_DendaMember);
+    }
+    
+    //--------------------------------------------------------------------------------------
+    public String getBanyaknyaMemberMengajukanBatal() {
+        int jumlah = 0;
+        try {
+            Class.forName("com.mysql.jdbc.Driver");
+            Connection conn = koneksi_db.initializeDatabase();
+            PreparedStatement psJmlDenda = conn.prepareStatement("SELECT COUNT(*) AS memberMengajukanPembatalan  FROM pinjam_buku JOIN buku ON pinjam_buku.id_buku=buku.id_buku JOIN member ON pinjam_buku.id_member=member.id_member WHERE batalkah='onProccess' ORDER BY mulai_pinjam DESC");
+            
+            
+            ResultSet rs4 = psJmlDenda.executeQuery();
+
+            while (rs4.next()) {
+                jumlah = rs4.getInt("memberMengajukanPembatalan");
+            }
+
+        } catch (Exception ex) {
+            Logger.getLogger(x_Buku.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return Integer.toString(jumlah);
+    }
+    
+    public String getJmlMemberMintaKonfirm() {
+        int jumlah = 0;
+        try {
+            Class.forName("com.mysql.jdbc.Driver");
+            Connection conn = koneksi_db.initializeDatabase();
+            PreparedStatement psJmlDenda = conn.prepareStatement("SELECT COUNT(*) AS membermintaKonfirmPinjam FROM pinjam_buku JOIN buku ON pinjam_buku.id_buku=buku.id_buku JOIN member ON pinjam_buku.id_member=member.id_member WHERE batalkah='tidak' AND dikonfirmasikah='belum'");
+            
+            
+            ResultSet rs4 = psJmlDenda.executeQuery();
+
+            while (rs4.next()) {
+                jumlah = rs4.getInt("membermintaKonfirmPinjam");
+            }
+
+        } catch (Exception ex) {
+            Logger.getLogger(x_Buku.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return Integer.toString(jumlah);
+    }
+    
+    public String getJmlMauAmbilBuku() {
+        int jumlah = 0;
+        try {
+            Class.forName("com.mysql.jdbc.Driver");
+            Connection conn = koneksi_db.initializeDatabase();
+            PreparedStatement psJmlDenda = conn.prepareStatement("SELECT COUNT(*) AS memberAmbilBuku FROM pinjam_buku JOIN buku ON pinjam_buku.id_buku=buku.id_buku JOIN member ON pinjam_buku.id_member=member.id_member WHERE dikonfirmasikah='sudah' AND diambilkah='belum'");
+            
+            
+            ResultSet rs4 = psJmlDenda.executeQuery();
+
+            while (rs4.next()) {
+                jumlah = rs4.getInt("memberAmbilBuku");
+            }
+
+        } catch (Exception ex) {
+            Logger.getLogger(x_Buku.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return Integer.toString(jumlah);
+    }
+    
+    public String getMemberBlmBayarDenda() {
+        int jumlah = 0;
+        try {
+            Class.forName("com.mysql.jdbc.Driver");
+            Connection conn = koneksi_db.initializeDatabase();
+            PreparedStatement psJmlDenda = conn.prepareStatement("SELECT COUNT(*) AS memberKenaDenda FROM denda INNER JOIN member USING (id_member) WHERE dibayarkah='belum'");
+            
+            
+            ResultSet rs4 = psJmlDenda.executeQuery();
+
+            while (rs4.next()) {
+                jumlah = rs4.getInt("memberKenaDenda");
+            }
+
+        } catch (Exception ex) {
+            Logger.getLogger(x_Buku.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return Integer.toString(jumlah);
     }
 
 }

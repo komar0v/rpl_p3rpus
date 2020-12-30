@@ -7,6 +7,7 @@ package servlet_views.v_admin;
 
 import DAO_.x_Buku;
 import DAO_.x_Member;
+import DAO_.x_Peminjaman;
 import java.io.IOException;
 import java.io.PrintWriter;
 import javax.servlet.RequestDispatcher;
@@ -47,12 +48,25 @@ public class admin_home extends HttpServlet {
         if (user_Admin != null) {
             x_Buku daoBuku = new x_Buku();
             x_Member daoMember = new x_Member();
+            x_Peminjaman daoPinjam = new x_Peminjaman();
             
             String jmlBuku = daoBuku.getJumlahSemuaBuku();
             request.setAttribute("jumlahKoleksiBuku", jmlBuku);
             
             String jmlMember = daoMember.getJumlahMember();
             request.setAttribute("jumlahMember", jmlMember);
+            
+            String jmlMemberMintaBatal = daoPinjam.getBanyaknyaMemberMengajukanBatal();
+            request.setAttribute("jumlahMemberMintaBatal", jmlMemberMintaBatal);
+            
+            String memberMintaKonfirmPinjam = daoPinjam.getJmlMemberMintaKonfirm();
+            request.setAttribute("jumlahMemberMintaKonfirmPinjam", memberMintaKonfirmPinjam);
+            
+            String memberMauAmbilBuku = daoPinjam.getJmlMauAmbilBuku();
+            request.setAttribute("jumlahMemberMauAmbilBuku", memberMauAmbilBuku);
+            
+            String memberKenaDenda = daoPinjam.getMemberBlmBayarDenda();
+            request.setAttribute("jumlahMemberBelumBayarDenda", memberKenaDenda);
             
             RequestDispatcher rd = getServletContext().getRequestDispatcher("/Views_/Panel_Admin/screen_home_admin.jsp");
             rd.forward(request, response);

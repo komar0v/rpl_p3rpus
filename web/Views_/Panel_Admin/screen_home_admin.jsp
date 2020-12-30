@@ -94,14 +94,14 @@
                     <!-- small box -->
                     <div class="small-box bg-success">
                         <div class="inner">
-                            <h3>x</h3>
+                            <h3>${jumlahMemberMintaKonfirmPinjam}</h3>
 
-                            <p>Member Pinjam Buku</p>
+                            <p>Menunggu Konfirmasi Pinjam Buku</p>
                         </div>
                         <div class="icon">
                             <i class="fas fa-handshake"></i>
                         </div>
-                        <a href="#" class="small-box-footer">Lihat Detail <i class="fas fa-arrow-circle-right"></i></a>
+                        <a href="<%=request.getContextPath()%>/admin/confirmPinjam" class="small-box-footer">Lihat Detail <i class="fas fa-arrow-circle-right"></i></a>
                     </div>
                 </div>
 
@@ -109,14 +109,14 @@
                     <!-- small box -->
                     <div class="small-box bg-info">
                         <div class="inner">
-                            <h3 style="color: white;">x</h3>
+                            <h3 style="color: white;">${jumlahMemberMauAmbilBuku}</h3>
 
                             <p style="color: white;">Member Ambil Buku</p>
                         </div>
                         <div class="icon">
                             <i class="fas fa-hand-holding-heart"></i>
                         </div>
-                        <a href="#" class="small-box-footer">Lihat Detail <i class="fas fa-arrow-circle-right"></i></a>
+                        <a href="<%=request.getContextPath()%>/admin/confirmAmbil" class="small-box-footer">Lihat Detail <i class="fas fa-arrow-circle-right"></i></a>
                     </div>
                 </div>
 
@@ -124,14 +124,14 @@
                     <!-- small box -->
                     <div class="small-box bg-warning">
                         <div class="inner">
-                            <h3>x</h3>
+                            <h3>${jumlahMemberMintaBatal}</h3>
 
                             <p>Member Batal Pinjam</p>
                         </div>
                         <div class="icon">
                             <i class="fas fa-undo-alt"></i>
                         </div>
-                        <a href="#" class="small-box-footer">Lihat Detail <i class="fas fa-arrow-circle-right"></i></a>
+                        <a href="<%=request.getContextPath()%>/admin/confirmPembatalan" class="small-box-footer">Lihat Detail <i class="fas fa-arrow-circle-right"></i></a>
                     </div>
                 </div>
 
@@ -139,14 +139,14 @@
                     <!-- small box -->
                     <div class="small-box bg-danger">
                         <div class="inner">
-                            <h3>x</h3>
+                            <h3>${jumlahMemberBelumBayarDenda}</h3>
 
-                            <p>Member di Denda</p>
+                            <p>Member Blm Bayar Denda</p>
                         </div>
                         <div class="icon">
                             <i class="fas fa-dollar-sign"></i>
                         </div>
-                        <a href="#" class="small-box-footer">Lihat Detail <i class="fas fa-arrow-circle-right"></i></a>
+                        <a href="<%=request.getContextPath()%>/admin/showDenda" class="small-box-footer">Lihat Detail <i class="fas fa-arrow-circle-right"></i></a>
                     </div>
                 </div>
             </div>

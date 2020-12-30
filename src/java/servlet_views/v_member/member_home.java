@@ -58,6 +58,9 @@ public class member_home extends HttpServlet {
             String jml_buku_dipinjam = daoPinjem.getJumlahBuku_dipinjamMember(Integer.parseInt(idMember));
             request.setAttribute("jumlahbuku_dipinjam", jml_buku_dipinjam);
             
+            String jml_dendaMember = daoPinjem.getBanyaknyaDendaMember(Integer.parseInt(idMember));
+            request.setAttribute("jumlahDendaMember", jml_dendaMember);
+            
             RequestDispatcher rd = getServletContext().getRequestDispatcher("/Views_/Panel_Member/screen_home_member.jsp");
             rd.forward(request, response);
         } else {

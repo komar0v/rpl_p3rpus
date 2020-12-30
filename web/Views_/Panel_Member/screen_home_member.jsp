@@ -85,7 +85,7 @@
                                     <div class="modal-body">
                                         <div class="form-label-group position-relative has-icon-left">
                                             <form action="<%=request.getContextPath()%>/member/cariBuku" method="GET" accept-charset="utf-8">
-                                                <input type="text" name="keyword_cari" id="keyword_cari" class="form-control" placeholder="Cari Judul Buku Apa?">
+                                                <input required="" type="text" name="keyword_cari" id="keyword_cari" class="form-control" placeholder="Cari Judul Buku Apa?">
                                                 <div class="form-control-position">
                                                     <i class="fa fa-search"></i>
                                                 </div>
@@ -105,7 +105,7 @@
                     </div>
 
                     <div class="col-lg-3 col-md-6 col-12">
-                        <a href="<?php echo base_url('Member_Panel/denda_member') ?>">
+                        <a href="<%=request.getContextPath()%>/member/denda">
                             <div class="card">
                                 <div class="card-header d-flex flex-column align-items-start pb-0">
                                     <div class="avatar bg-rgba-warning p-50 m-0">
@@ -113,7 +113,7 @@
                                             <i class="fa fa-money text-warning font-medium-5"></i>
                                         </div>
                                     </div>
-                                    <h2 class="text-bold-700 mt-1 mb-25">x</h2>
+                                    <h2 class="text-bold-700 mt-1 mb-25">${jumlahDendaMember}</h2>
                                     <p class="mb-0">Denda</p>
                                 </div>
                                 <div class="card-content">

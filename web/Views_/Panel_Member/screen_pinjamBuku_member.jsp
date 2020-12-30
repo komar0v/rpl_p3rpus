@@ -33,7 +33,7 @@
                                                 <form action="<%=request.getContextPath()%>/member/cariBuku" method="GET" accept-charset="utf-8">
                                                     <fieldset class="form-group position-relative has-icon-left">
 
-                                                        <input type="text" class="form-control form-control-lg" name="keyword_cari" id="keyword_cari" placeholder="cari judul buku apa?">
+                                                        <input required="" type="text" class="form-control form-control-lg" name="keyword_cari" id="keyword_cari" placeholder="cari judul buku apa?">
                                                         <div class="form-control-position">
                                                             <i class="feather icon-search"></i>
                                                         </div>
