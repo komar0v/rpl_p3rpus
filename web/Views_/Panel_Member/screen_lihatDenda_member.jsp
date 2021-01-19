@@ -55,7 +55,7 @@
                                                     if (listDenda.isEmpty() == true) {
                                                         out.print("<h4 class=\"font-weight-normal content-header-title pb-3\">DENDA TIDAK ADA</h4>");
                                                     }
-
+                                                    
                                                     for (M_denda detailDenda : listDenda) {
                                                 %>
 
@@ -65,7 +65,10 @@
 
                                                     <% if (detailDenda.getDibayarkah().equals("belum")) {
                                                             out.print("<td><div class=\"badge badge-pill badge-danger\"><strong>BELUM DIBAYAR</strong></div></td>");
-                                                        }%>
+                                                        } else if (detailDenda.getDikembalikan().equals("sudah")) {
+                                                            out.print("<td><div class=\"badge badge-pill badge-success\"><strong>TIDAK DENDA</strong></div></td>");
+                                                        }
+                                                    %>
 
                                                 </tr>
                                                 <%}%>

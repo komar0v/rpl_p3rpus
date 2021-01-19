@@ -50,27 +50,7 @@ public class doAdmin_konfirmasiBatalPinjam extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         processRequest(request, response);
-        String user_Admin = null;
-
-        Cookie[] cookies = request.getCookies();
-        for (Cookie cookie : cookies) {
-            if (cookie.getName().equals("usernameAdmin")) {
-                user_Admin = cookie.getValue();
-            }
-        }
-        if (user_Admin != null) {
-            String idPinjam_ = request.getParameter("idPinjam_");
-            
-            x_Peminjaman daoPeminjaman= new x_Peminjaman();
-            daoPeminjaman.admin_konfirmasiPembatalanPinjam(Integer.parseInt(idPinjam_));
-
-            HttpSession session = request.getSession(true);
-
-            session.setAttribute("flashMessageAdmin", "Toast.fire({icon: \"success\",title: \" Dikonfirmasi \"});");
-            response.sendRedirect(request.getContextPath() + "/admin/confirmPembatalan");
-        } else {
-            response.sendRedirect(request.getContextPath() + "/admin/login");
-        }
+        
     }
 
     /**
@@ -85,6 +65,28 @@ public class doAdmin_konfirmasiBatalPinjam extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         processRequest(request, response);
+        String user_Admin = null;
+
+        Cookie[] cookies = request.getCookies();
+        for (Cookie cookie : cookies) {
+            if (cookie.getName().equals("usernameAdmin")) {
+                user_Admin = cookie.getValue();
+            }
+        }
+        if (user_Admin != null) {
+            String idPinjam_ = request.getParameter("idPinjam_");
+            String idBuku_ = request.getParameter("idBuku_");
+            
+            x_Peminjaman daoPeminjaman= new x_Peminjaman();
+            daoPeminjaman.admin_konfirmasiPembatalanPinjam(Integer.parseInt(idPinjam_),idBuku_);
+
+            HttpSession session = request.getSession(true);
+
+            session.setAttribute("flashMessageAdmin", "Toast.fire({icon: \"success\",title: \" Dikonfirmasi \"});");
+            response.sendRedirect(request.getContextPath() + "/admin/confirmPembatalan");
+        } else {
+            response.sendRedirect(request.getContextPath() + "/admin/login");
+        }
     }
 
     /**

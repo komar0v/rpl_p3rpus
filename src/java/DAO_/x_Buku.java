@@ -24,7 +24,7 @@ public class x_Buku {
         try {
             Class.forName("com.mysql.jdbc.Driver");
             Connection conn = koneksi_db.initializeDatabase();
-            PreparedStatement getHasilCari = conn.prepareStatement("SELECT id_buku, judul_buku, pengarang_buku, tahunterbit_buku, penerbit_buku FROM buku WHERE judul_buku LIKE '%" + keyword + "%' ");
+            PreparedStatement getHasilCari = conn.prepareStatement("SELECT id_buku, judul_buku, pengarang_buku, tahunterbit_buku, penerbit_buku FROM buku WHERE dipinjamkah='tidak' AND judul_buku LIKE '%" + keyword + "%' ");
 
             ResultSet rs4 = getHasilCari.executeQuery();
             while (rs4.next()) {
@@ -48,7 +48,7 @@ public class x_Buku {
         try {
             Class.forName("com.mysql.jdbc.Driver");
             Connection conn = koneksi_db.initializeDatabase();
-            PreparedStatement getHasilCari = conn.prepareStatement("SELECT judul_buku, pengarang_buku, penerbit_buku, tahunterbit_buku FROM buku WHERE judul_buku LIKE '%" + keyword + "%' ");
+            PreparedStatement getHasilCari = conn.prepareStatement("SELECT judul_buku, pengarang_buku, penerbit_buku, tahunterbit_buku FROM buku WHERE dipinjamkah='tidak' AND judul_buku LIKE '%" + keyword + "%' ");
 
             ResultSet rs4 = getHasilCari.executeQuery();
             while (rs4.next()) {

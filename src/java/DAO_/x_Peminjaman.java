@@ -43,20 +43,24 @@ public class x_Peminjaman {
         return day_remain;
     }
 
-    public void admin_konfirmasiPengembalian_WITH_DENDA(int id_denda, int id_pinjam, int id_member, int besar_denda) {
+    public void admin_konfirmasiPengembalian_WITH_DENDA(int id_denda, int id_pinjam, int id_member, int besar_denda, String idBuku_) {
         try {
             Class.forName("com.mysql.jdbc.Driver");
             Connection conn = koneksi_db.initializeDatabase();
-            PreparedStatement ps_1 = conn.prepareStatement("UPDATE pinjam_buku SET dikembalikan='sudah', akhir_pinjam=CURRENT_DATE() WHERE id_pinjam=?");
+            PreparedStatement ps_1 = conn.prepareStatement("UPDATE pinjam_buku SET dikembalikan='sudah', dendakah='ya', akhir_pinjam=CURRENT_DATE() WHERE id_pinjam=?");
             ps_1.setInt(1, id_pinjam);
             ps_1.executeUpdate();
 
-            PreparedStatement ps_2 = conn.prepareStatement("INSERT INTO denda VALUES (?,?,?,?,'belum')");
-            ps_2.setInt(1, id_denda);
-            ps_2.setInt(2, id_member);
-            ps_2.setInt(3, id_pinjam);
-            ps_2.setInt(4, besar_denda);
-            ps_2.executeUpdate();
+            PreparedStatement ps_2x = conn.prepareStatement("INSERT INTO denda VALUES (?,?,?,?,'belum')");
+            ps_2x.setInt(1, id_denda);
+            ps_2x.setInt(2, id_member);
+            ps_2x.setInt(3, id_pinjam);
+            ps_2x.setInt(4, besar_denda);
+            ps_2x.executeUpdate();
+            
+            PreparedStatement ps_3x = conn.prepareStatement("UPDATE buku SET dipinjamkah='tidak' WHERE id_buku=?");
+            ps_3x.setString(1, idBuku_);
+            ps_3x.executeUpdate();
 
             conn.close();
 
@@ -65,14 +69,18 @@ public class x_Peminjaman {
         }
     }
 
-    public void admin_konfirmasiPengembalian_TANPA_DENDA(int id_pinjam) {
+    public void admin_konfirmasiPengembalian_TANPA_DENDA(int id_pinjam, String idBuku_) {
         try {
             Class.forName("com.mysql.jdbc.Driver");
             Connection conn = koneksi_db.initializeDatabase();
-            PreparedStatement ps_1 = conn.prepareStatement("UPDATE pinjam_buku SET akhir_pinjam=CURRENT_DATE(), dikembalikan='sudah' WHERE id_pinjam=?");
+            PreparedStatement ps_1 = conn.prepareStatement("UPDATE pinjam_buku SET akhir_pinjam=CURRENT_DATE(), dendakah='tidak', dikembalikan='sudah' WHERE id_pinjam=?");
             ps_1.setInt(1, id_pinjam);
             ps_1.executeUpdate();
-
+            
+            PreparedStatement ps_2 = conn.prepareStatement("UPDATE buku SET dipinjamkah='tidak' WHERE id_buku=?");
+            ps_2.setString(1, idBuku_);
+            ps_2.executeUpdate();
+            
             conn.close();
 
         } catch (Exception ex) {
@@ -84,7 +92,7 @@ public class x_Peminjaman {
         try {
             Class.forName("com.mysql.jdbc.Driver");
             Connection conn = koneksi_db.initializeDatabase();
-            PreparedStatement ps = conn.prepareStatement("INSERT INTO pinjam_buku VALUES (?,?,?,?,(mulai_pinjam + INTERVAL 14 DAY),?,?,?,?)");
+            PreparedStatement ps = conn.prepareStatement("INSERT INTO pinjam_buku VALUES (?,?,?,?,(mulai_pinjam + INTERVAL 14 DAY),?,?,?,?,'tidak')");
             ps.setInt(1, pinjem.getId_pinjam());
             ps.setInt(2, pinjem.getId_member());
             ps.setString(3, pinjem.getId_buku());
@@ -94,6 +102,11 @@ public class x_Peminjaman {
             ps.setString(7, pinjem.getBatalkah());
             ps.setString(8, pinjem.getDikembalikan());
             ps.executeUpdate();
+            
+            PreparedStatement ps_2 = conn.prepareStatement("UPDATE buku SET dipinjamkah='ya' WHERE id_buku=?");
+            ps_2.setString(1, pinjem.getId_buku());
+            ps_2.executeUpdate();
+            
             conn.close();
 
         } catch (Exception ex) {
@@ -129,7 +142,7 @@ public class x_Peminjaman {
         try {
             Class.forName("com.mysql.jdbc.Driver");
             Connection conn = koneksi_db.initializeDatabase();
-            PreparedStatement member_denda = conn.prepareStatement("SELECT dibayarkah, judul_buku, id_denda, besar_denda, pinjam_buku.id_pinjam FROM pinjam_buku JOIN buku ON pinjam_buku.id_buku=buku.id_buku JOIN member ON pinjam_buku.id_member=member.id_member JOIN denda WHERE dikembalikan='sudah' AND dibayarkah='belum' AND pinjam_buku.id_member=?");
+            PreparedStatement member_denda = conn.prepareStatement("SELECT * FROM denda INNER JOIN pinjam_buku USING (id_pinjam) JOIN buku ON buku.id_buku=pinjam_buku.id_buku WHERE dendakah='ya' AND dibayarkah='belum' AND pinjam_buku.id_member=?");
             member_denda.setInt(1, id_member);
             
             ResultSet rs4 = member_denda.executeQuery();
@@ -139,6 +152,7 @@ public class x_Peminjaman {
                 detailDenda.setId_denda(rs4.getInt("id_denda"));
                 detailDenda.setBesar_denda(rs4.getString("besar_denda"));
                 detailDenda.setJudul_buku(rs4.getString("judul_buku"));
+                detailDenda.setDikembalikan(rs4.getString("dikembalikan"));
                 detailDenda.setDibayarkah(rs4.getString("dibayarkah"));
                 list_semuaDenda.add(detailDenda);
             }
@@ -267,7 +281,7 @@ public class x_Peminjaman {
         try {
             Class.forName("com.mysql.jdbc.Driver");
             Connection conn = koneksi_db.initializeDatabase();
-            PreparedStatement ps = conn.prepareStatement("UPDATE pinjam_buku SET diambilkah='batal' WHERE id_pinjam=?");
+            PreparedStatement ps = conn.prepareStatement("UPDATE pinjam_buku SET diambilkah='batal', dendakah='tidak' WHERE id_pinjam=?");
             ps.setInt(1, id_pinjam);
             ps.executeUpdate();
             conn.close();
@@ -291,13 +305,18 @@ public class x_Peminjaman {
         }
     }
 
-    public void admin_konfirmasiPembatalanPinjam(int id_pinjam) {
+    public void admin_konfirmasiPembatalanPinjam(int id_pinjam, String idBuku_) {
         try {
             Class.forName("com.mysql.jdbc.Driver");
             Connection conn = koneksi_db.initializeDatabase();
-            PreparedStatement ps = conn.prepareStatement("UPDATE pinjam_buku SET batalkah='ya' WHERE batalkah='onProccess' AND id_pinjam=?");
+            PreparedStatement ps = conn.prepareStatement("UPDATE pinjam_buku SET dendakah='tidak', batalkah='ya' WHERE batalkah='onProccess' AND id_pinjam=?");
             ps.setInt(1, id_pinjam);
             ps.executeUpdate();
+            
+            PreparedStatement ps_2 = conn.prepareStatement("UPDATE buku SET dipinjamkah='tidak' WHERE id_buku=?");
+            ps_2.setString(1, idBuku_);
+            ps_2.executeUpdate();
+            
             conn.close();
 
         } catch (Exception ex) {
@@ -310,7 +329,7 @@ public class x_Peminjaman {
         try {
             Class.forName("com.mysql.jdbc.Driver");
             Connection conn = koneksi_db.initializeDatabase();
-            PreparedStatement detail_buku_dipinjam = conn.prepareStatement("SELECT judul_buku, nama_member, id_pinjam, mulai_pinjam, akhir_pinjam FROM pinjam_buku JOIN buku ON pinjam_buku.id_buku=buku.id_buku JOIN member ON pinjam_buku.id_member=member.id_member WHERE batalkah='onProccess' ORDER BY mulai_pinjam DESC");
+            PreparedStatement detail_buku_dipinjam = conn.prepareStatement("SELECT buku.id_buku, judul_buku, nama_member, id_pinjam, mulai_pinjam, akhir_pinjam FROM pinjam_buku JOIN buku ON pinjam_buku.id_buku=buku.id_buku JOIN member ON pinjam_buku.id_member=member.id_member WHERE batalkah='onProccess' ORDER BY mulai_pinjam DESC");
 
             ResultSet rs4 = detail_buku_dipinjam.executeQuery();
             while (rs4.next()) {
@@ -320,6 +339,7 @@ public class x_Peminjaman {
                 buku_dipinjam.setJudul_buku(rs4.getString("judul_buku"));
                 buku_dipinjam.setMulai_pinjam(rs4.getString("mulai_pinjam"));
                 buku_dipinjam.setAkhir_pinjam(rs4.getString("akhir_pinjam"));
+                buku_dipinjam.setId_buku(rs4.getString("id_buku"));
                 detail_buku_yang_dipinjam.add(buku_dipinjam);
             }
 
@@ -358,12 +378,13 @@ public class x_Peminjaman {
         try {
             Class.forName("com.mysql.jdbc.Driver");
             Connection conn = koneksi_db.initializeDatabase();
-            PreparedStatement detail_buku_dipinjam = conn.prepareStatement("SELECT judul_buku, member.id_member, nama_member, id_pinjam, mulai_pinjam, akhir_pinjam FROM pinjam_buku JOIN buku ON pinjam_buku.id_buku=buku.id_buku JOIN member ON pinjam_buku.id_member=member.id_member WHERE diambilkah='sudah' AND dikembalikan='belum' ORDER BY mulai_pinjam DESC");
+            PreparedStatement detail_buku_dipinjam = conn.prepareStatement("SELECT judul_buku, buku.id_buku, member.id_member, nama_member, id_pinjam, mulai_pinjam, akhir_pinjam FROM pinjam_buku JOIN buku ON pinjam_buku.id_buku=buku.id_buku JOIN member ON pinjam_buku.id_member=member.id_member WHERE diambilkah='sudah' AND dikembalikan='belum' ORDER BY mulai_pinjam DESC");
 
             ResultSet rs4 = detail_buku_dipinjam.executeQuery();
             while (rs4.next()) {
                 M_pinjamBuku buku_dipinjam = new M_pinjamBuku();
                 buku_dipinjam.setId_pinjam(rs4.getInt("id_pinjam"));
+                buku_dipinjam.setId_buku(rs4.getString("id_buku"));
                 buku_dipinjam.setId_member(rs4.getInt("id_member"));
                 buku_dipinjam.setNama_member(rs4.getString("nama_member"));
                 buku_dipinjam.setJudul_buku(rs4.getString("judul_buku"));

@@ -51,7 +51,7 @@
                                         <td><%= denda_.getNama_member()%></td>
                                         <td><%= denda_.getBesar_denda()%></td>
                                         <td>
-                                            <button type="button" data-toggle="modal" data-target="#modal-sm2_<%=i%>" class="btn btn-success btn-sm"><i class="fas fa-check-square"></i> Denda sudah dibayar</button>
+                                            <button type="button" data-toggle="modal" data-target="#modal-sm2_<%=i%>" class="btn btn-success btn-sm"><i class="fas fa-check-square"></i> Konfirmasi bayar</button>
                                             <div class="modal fade" id="modal-sm2_<%=i%>">
                                                 <div class="modal-dialog modal-sm">
                                                     <div class="modal-content">
@@ -63,7 +63,7 @@
                                                             <div class="alert alert-warning alert-dismissible">
                                                                 <h6><i class="icon fas fa-exclamation-triangle"></i>Perhatian!</h6>
 
-                                                                <p>Pastikan member membayar sebesar<br> Rp. <%= denda_.getBesar_denda()%><br></p>
+                                                                <p>Pastikan member "<%= denda_.getNama_member()%>" membayar sebesar<br> Rp. <%= denda_.getBesar_denda()%><br></p>
 
                                                             </div>
                                                         </div>
@@ -71,6 +71,7 @@
                                                             <form action="<%=request.getContextPath()%>/admin/doAdmin_konfirmBayarDenda" method="POST" accept-charset="utf-8">
                                                                 <button type="button" class="btn btn-block btn-default" data-dismiss="modal">Tidak</button>
                                                                 <br>
+                                                                <input type="hidden" name="idPinjam_" value="<%= denda_.getId_pinjam()%>" >
                                                                 <input type="hidden" name="idDenda_" value="<%= denda_.getId_denda()%>" >
                                                                 <button type="submit" class="btn btn-block btn-primary">Ya, sudah dibayar</button>
                                                             </form>

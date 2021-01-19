@@ -53,7 +53,12 @@
                                         <td><%= permintaanPinjam.getMulai_pinjam()%></td>
                                         <td><%= permintaanPinjam.getAkhir_pinjam()%></td>
                                         <td>
-                                            <button onclick="window.location.href = '<%=request.getContextPath()%>/admin/doAdmin_konfirmasiBatalPinjam?idPinjam_=<%= permintaanPinjam.getId_pinjam()%>'" type="button" class="btn btn-success btn-sm"><i class="fas fa-check-circle"></i> Batalkan Pinjam</button>
+                                            <form action="<%=request.getContextPath()%>/admin/doAdmin_konfirmasiBatalPinjam" method="POST" accept-charset="utf-8">
+                                                <input type="hidden" name="idBuku_" value="<%= permintaanPinjam.getId_buku()%>">
+                                                <input type="hidden" name="idPinjam_" value="<%= permintaanPinjam.getId_pinjam()%>">
+
+                                                <button type="submit" class="btn btn-success btn-sm"><i class="fas fa-check-circle"></i> Batalkan Pinjam</button>
+                                            </form>
                                         </td>
                                     </tr>
                                     <%}%> 

@@ -11,10 +11,18 @@ package Model_;
  */
 public class M_denda {
     int id_denda, id_member, id_pinjam;
-    String besar_denda, dibayarkah, nama_member;
+    String besar_denda, dibayarkah, nama_member, dikembalikan;
     String judul_buku;
 
     public M_denda() {
+    }
+
+    public String getDikembalikan() {
+        return dikembalikan;
+    }
+
+    public void setDikembalikan(String dikembalikan) {
+        this.dikembalikan = dikembalikan;
     }
 
     public String getJudul_buku() {

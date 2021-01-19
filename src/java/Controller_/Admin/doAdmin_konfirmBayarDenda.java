@@ -75,9 +75,10 @@ public class doAdmin_konfirmBayarDenda extends HttpServlet {
         }
         if (user_Admin != null) {
             String idDenda_ = request.getParameter("idDenda_");
+            String idPinjam_ = request.getParameter("idPinjam_");
             
             x_Denda daoDenda = new x_Denda();
-            daoDenda.admin_konfirmasiBayar_denda(Integer.parseInt(idDenda_));
+            daoDenda.admin_konfirmasiBayar_denda(Integer.parseInt(idDenda_),Integer.parseInt(idPinjam_));
 
             HttpSession session = request.getSession(true);
 

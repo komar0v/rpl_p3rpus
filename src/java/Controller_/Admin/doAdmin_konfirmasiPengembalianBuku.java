@@ -82,6 +82,8 @@ public class doAdmin_konfirmasiPengembalianBuku extends HttpServlet {
             
             String idMember_string = request.getParameter("idMember_");
             int idMember_int = Integer.parseInt(idMember_string);
+            
+            String idBuku_ = request.getParameter("idBuku_");
 
             x_Peminjaman cekDayRemain = new x_Peminjaman();
             int dayRemain = Integer.parseInt(cekDayRemain.getDayRemaining(idPinjam_int));
@@ -100,7 +102,7 @@ public class doAdmin_konfirmasiPengembalianBuku extends HttpServlet {
                 System.out.println("DENDA = Rp. " + besarDenda);
                 
                 x_Peminjaman sudah_dikembalikanDENGANDENDA = new x_Peminjaman();
-                sudah_dikembalikanDENGANDENDA.admin_konfirmasiPengembalian_WITH_DENDA(idDenda_fix, idPinjam_int, idMember_int, besarDenda);
+                sudah_dikembalikanDENGANDENDA.admin_konfirmasiPengembalian_WITH_DENDA(idDenda_fix, idPinjam_int, idMember_int, besarDenda, idBuku_);
                 
                 session.setAttribute("flashMessageAdmin", "Toast.fire({icon: \"success\",title: \" Dikonfirmasi!, Member Kena denda \"});");
                 response.sendRedirect(request.getContextPath() + "/admin/showDenda");
@@ -108,7 +110,7 @@ public class doAdmin_konfirmasiPengembalianBuku extends HttpServlet {
             } else if (dayRemain >= 1) {
                 System.out.println("TIDAK DENDA");
                 x_Peminjaman sudah_dikembalikan = new x_Peminjaman();
-                sudah_dikembalikan.admin_konfirmasiPengembalian_TANPA_DENDA(idPinjam_int);
+                sudah_dikembalikan.admin_konfirmasiPengembalian_TANPA_DENDA(idPinjam_int, idBuku_);
                 session.setAttribute("flashMessageAdmin", "Toast.fire({icon: \"success\",title: \" Dikonfirmasi!, Member tidak denda \"});");
                 response.sendRedirect(request.getContextPath() + "/admin/pengembalianBuku");
             }

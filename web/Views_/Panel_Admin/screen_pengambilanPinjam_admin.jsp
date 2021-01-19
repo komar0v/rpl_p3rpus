@@ -52,9 +52,9 @@
                                         <td><%= permintaanPinjam.getMulai_pinjam()%></td>
                                         <td>
                                             <button onclick="window.location.href = '<%=request.getContextPath()%>/admin/doAdmin_konfirmasiAmbil?idPinjam_=<%= permintaanPinjam.getId_pinjam()%>'" type="button" class="btn btn-success btn-sm"><i class="fas fa-check-circle"></i> Sudah diambil</button>
-                                            |
+<!--                                            |
                                             <button onclick="window.location.href = '<%=request.getContextPath()%>/admin/doAdmin_konfirmasiBatalAmbil?idPinjam_=<%= permintaanPinjam.getId_pinjam()%>'" type="button" class="btn btn-danger btn-sm"><i class=" fas fa-times-circle"></i> Batal diambil</button>
-                                           
+                                           -->
                                         </td>
                                         
                                     </tr>
