@@ -112,7 +112,7 @@
 
                     <li class=" nav-item"><a href="<%=request.getContextPath()%>/member/batalPinjam"><i class="fa fa-times-circle-o"></i><span class="menu-title">Batal Pinjam</span></a></li>
 
-                    <li class=" nav-item"><a href="#"><i class="fa fa-money"></i><span class="menu-title">Denda</span></a></li>
+                    <li class=" nav-item"><a href="<%=request.getContextPath()%>/member/denda"><i class="fa fa-money"></i><span class="menu-title">Denda</span></a></li>
 
                     <li class=" nav-item"><a href="#"><i class="feather icon-user"></i>
                             <span class="menu-title" data-i18n="User">

@@ -11,9 +11,27 @@ package Model_;
  */
 public class M_denda {
     int id_denda, id_member, id_pinjam;
-    String besar_denda, dibayarkah;
+    String besar_denda, dibayarkah, nama_member;
+    String judul_buku;
 
     public M_denda() {
+    }
+
+    public String getJudul_buku() {
+        return judul_buku;
+    }
+
+    public void setJudul_buku(String judul_buku) {
+        this.judul_buku = judul_buku;
+    }
+    
+
+    public String getNama_member() {
+        return nama_member;
+    }
+
+    public void setNama_member(String nama_member) {
+        this.nama_member = nama_member;
     }
 
     public int getId_denda() {

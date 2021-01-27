@@ -87,7 +87,14 @@
                                                                 out.print("<td><div class=\"badge badge-pill badge-danger\">Buku batal diambil</div></td>");
                                                             } else {
                                                                 out.print("<td><strong>Mulai Pinjam : " + mulai_pinjam + "<br>Akhir Pinjam : " + akhir_pinjam + "</strong></td>");
-                                                                out.print("<td><strong>Masa Berlaku : " + pinjam_day_remaining + " hari lagi</strong></td>");
+                                                                if(Integer.parseInt(pinjam_day_remaining)>=1){
+                                                                    out.print("<td><strong>Masa Berlaku : " + pinjam_day_remaining + " hari lagi</strong></td>");
+                                                                }else{
+                                                                    int dendaPerDay = 2000;
+                                                                    int besarDenda = (-1)*Integer.parseInt(pinjam_day_remaining) * dendaPerDay;
+                                                                    out.print("<td><strong>Denda Rp. " + besarDenda + "</strong></td>");
+                                                                }
+                                                                
                                                             }%>
 
 

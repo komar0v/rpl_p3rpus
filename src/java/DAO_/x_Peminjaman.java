@@ -7,6 +7,7 @@ package DAO_;
 
 import Controller_.koneksi_db;
 import Model_.M_buku;
+import Model_.M_denda;
 import Model_.M_detailBuku_Dipinjam;
 import Model_.M_pinjamBuku;
 import java.sql.Connection;
@@ -22,8 +23,8 @@ import java.util.logging.Logger;
  * @author ASUS
  */
 public class x_Peminjaman {
-    
-    public String getDayRemaining(int id_pinjam){
+
+    public String getDayRemaining(int id_pinjam) {
         String day_remain = "";
         try {
             Class.forName("com.mysql.jdbc.Driver");
@@ -35,46 +36,43 @@ public class x_Peminjaman {
             while (rs4.next()) {
                 day_remain = rs4.getString("pinjam_day_remaining");
             }
-            
+
         } catch (Exception ex) {
             Logger.getLogger(x_Peminjaman.class.getName()).log(Level.SEVERE, null, ex);
         }
         return day_remain;
     }
-    
-    public void admin_konfirmasiPengembalian_WITH_DENDA(int id_denda, int id_pinjam, int id_member, int besar_denda){
+
+    public void admin_konfirmasiPengembalian_WITH_DENDA(int id_denda, int id_pinjam, int id_member, int besar_denda) {
         try {
             Class.forName("com.mysql.jdbc.Driver");
             Connection conn = koneksi_db.initializeDatabase();
-            PreparedStatement ps_1 = conn.prepareStatement("UPDATE pinjam_buku SET dikembalikan='sudah' WHERE id_pinjam=?");
+            PreparedStatement ps_1 = conn.prepareStatement("UPDATE pinjam_buku SET dikembalikan='sudah', akhir_pinjam=CURRENT_DATE() WHERE id_pinjam=?");
             ps_1.setInt(1, id_pinjam);
             ps_1.executeUpdate();
-            
-            PreparedStatement ps_2 = conn.prepareStatement("INSERT INTO ");
-           
-            ps_2.setInt(1, id_pinjam);
+
+            PreparedStatement ps_2 = conn.prepareStatement("INSERT INTO denda VALUES (?,?,?,?,'belum')");
+            ps_2.setInt(1, id_denda);
+            ps_2.setInt(2, id_member);
+            ps_2.setInt(3, id_pinjam);
+            ps_2.setInt(4, besar_denda);
             ps_2.executeUpdate();
-            
+
             conn.close();
 
         } catch (Exception ex) {
             Logger.getLogger(x_Peminjaman.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    
-    public void admin_konfirmasiPengembalian_TANPA_DENDA(int id_pinjam){
+
+    public void admin_konfirmasiPengembalian_TANPA_DENDA(int id_pinjam) {
         try {
             Class.forName("com.mysql.jdbc.Driver");
             Connection conn = koneksi_db.initializeDatabase();
-            PreparedStatement ps_1 = conn.prepareStatement("UPDATE pinjam_buku SET dikembalikan='sudah' WHERE id_pinjam=?");
+            PreparedStatement ps_1 = conn.prepareStatement("UPDATE pinjam_buku SET akhir_pinjam=CURRENT_DATE(), dikembalikan='sudah' WHERE id_pinjam=?");
             ps_1.setInt(1, id_pinjam);
             ps_1.executeUpdate();
-            
-            PreparedStatement ps_2 = conn.prepareStatement("UPDATE pinjam_buku SET akhir_pinjam=CURRENT_DATE() WHERE id_pinjam=?");
-           
-            ps_2.setInt(1, id_pinjam);
-            ps_2.executeUpdate();
-            
+
             conn.close();
 
         } catch (Exception ex) {
@@ -102,6 +100,53 @@ public class x_Peminjaman {
             Logger.getLogger(x_Peminjaman.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
+    
+    public static List<M_denda> getSemuaDenda() {
+        ArrayList<M_denda> list_semuaDenda = new ArrayList<M_denda>();
+        try {
+            Class.forName("com.mysql.jdbc.Driver");
+            Connection conn = koneksi_db.initializeDatabase();
+            PreparedStatement semua_denda = conn.prepareStatement("SELECT * FROM denda INNER JOIN member USING (id_member) WHERE dibayarkah='belum'");
+
+            ResultSet rs4 = semua_denda.executeQuery();
+            while (rs4.next()) {
+                M_denda detailDenda = new M_denda();
+                detailDenda.setId_pinjam(rs4.getInt("id_pinjam"));
+                detailDenda.setId_denda(rs4.getInt("id_denda"));
+                detailDenda.setBesar_denda(rs4.getString("besar_denda"));
+                detailDenda.setNama_member(rs4.getString("nama_member"));
+                list_semuaDenda.add(detailDenda);
+            }
+
+        } catch (Exception ex) {
+            Logger.getLogger(x_Peminjaman.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return list_semuaDenda;
+    }
+    
+    public static List<M_denda> getDendaMember(int id_member) {
+        ArrayList<M_denda> list_semuaDenda = new ArrayList<M_denda>();
+        try {
+            Class.forName("com.mysql.jdbc.Driver");
+            Connection conn = koneksi_db.initializeDatabase();
+            PreparedStatement member_denda = conn.prepareStatement("SELECT judul_buku, id_denda, besar_denda, pinjam_buku.id_pinjam FROM pinjam_buku JOIN buku ON pinjam_buku.id_buku=buku.id_buku JOIN member ON pinjam_buku.id_member=member.id_member JOIN denda WHERE dikembalikan='sudah' AND dibayarkah='belum' AND pinjam_buku.id_member=?");
+            member_denda.setInt(1, id_member);
+            
+            ResultSet rs4 = member_denda.executeQuery();
+            while (rs4.next()) {
+                M_denda detailDenda = new M_denda();
+                detailDenda.setId_pinjam(rs4.getInt("id_pinjam"));
+                detailDenda.setId_denda(rs4.getInt("id_denda"));
+                detailDenda.setBesar_denda(rs4.getString("besar_denda"));
+                detailDenda.setJudul_buku(rs4.getString("judul_buku"));
+                list_semuaDenda.add(detailDenda);
+            }
+
+        } catch (Exception ex) {
+            Logger.getLogger(x_Peminjaman.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return list_semuaDenda;
+    }
 
     public static List<M_pinjamBuku> getBuku_yang_dipinjam(int id_member) {
         ArrayList<M_pinjamBuku> detail_buku_yang_dipinjam = new ArrayList<M_pinjamBuku>();
@@ -123,13 +168,13 @@ public class x_Peminjaman {
                 buku_dipinjam.setPinjam_day_remaining(rs4.getString("pinjam_day_remaining"));
                 detail_buku_yang_dipinjam.add(buku_dipinjam);
             }
-            
+
         } catch (Exception ex) {
             Logger.getLogger(x_Peminjaman.class.getName()).log(Level.SEVERE, null, ex);
         }
         return detail_buku_yang_dipinjam;
     }
-    
+
     public static List<M_pinjamBuku> getBuku_yang_mauDiperpanjang(int id_member) {
         ArrayList<M_pinjamBuku> detail_buku_yang_dipinjam = new ArrayList<M_pinjamBuku>();
         try {
@@ -150,13 +195,13 @@ public class x_Peminjaman {
                 buku_dipinjam.setPinjam_day_remaining(rs4.getString("pinjam_day_remaining"));
                 detail_buku_yang_dipinjam.add(buku_dipinjam);
             }
-            
+
         } catch (Exception ex) {
             Logger.getLogger(x_Peminjaman.class.getName()).log(Level.SEVERE, null, ex);
         }
         return detail_buku_yang_dipinjam;
     }
-    
+
     public static List<M_pinjamBuku> getSemuaPeminjaman() {
         ArrayList<M_pinjamBuku> detail_buku_yang_dipinjam = new ArrayList<M_pinjamBuku>();
         try {
@@ -173,13 +218,13 @@ public class x_Peminjaman {
                 buku_dipinjam.setMulai_pinjam(rs4.getString("mulai_pinjam"));
                 detail_buku_yang_dipinjam.add(buku_dipinjam);
             }
-            
+
         } catch (Exception ex) {
             Logger.getLogger(x_Peminjaman.class.getName()).log(Level.SEVERE, null, ex);
         }
         return detail_buku_yang_dipinjam;
     }
-    
+
     public static List<M_pinjamBuku> getSemuaPeminjaman_yangsudah_dikonfirmasi() {
         ArrayList<M_pinjamBuku> detail_buku_yang_dipinjam = new ArrayList<M_pinjamBuku>();
         try {
@@ -196,14 +241,14 @@ public class x_Peminjaman {
                 buku_dipinjam.setMulai_pinjam(rs4.getString("mulai_pinjam"));
                 detail_buku_yang_dipinjam.add(buku_dipinjam);
             }
-            
+
         } catch (Exception ex) {
             Logger.getLogger(x_Peminjaman.class.getName()).log(Level.SEVERE, null, ex);
         }
         return detail_buku_yang_dipinjam;
     }
-    
-    public void admin_konfirmasiAmbil_SUDAH_DIAMBIL(int id_pinjam){
+
+    public void admin_konfirmasiAmbil_SUDAH_DIAMBIL(int id_pinjam) {
         try {
             Class.forName("com.mysql.jdbc.Driver");
             Connection conn = koneksi_db.initializeDatabase();
@@ -216,8 +261,8 @@ public class x_Peminjaman {
             Logger.getLogger(x_Peminjaman.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    
-    public void admin_konfirmasiAmbil_BATAL_DIAMBIL(int id_pinjam){
+
+    public void admin_konfirmasiAmbil_BATAL_DIAMBIL(int id_pinjam) {
         try {
             Class.forName("com.mysql.jdbc.Driver");
             Connection conn = koneksi_db.initializeDatabase();
@@ -230,8 +275,8 @@ public class x_Peminjaman {
             Logger.getLogger(x_Peminjaman.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    
-    public void admin_konfirmasiPinjam(int id_pinjam){
+
+    public void admin_konfirmasiPinjam(int id_pinjam) {
         try {
             Class.forName("com.mysql.jdbc.Driver");
             Connection conn = koneksi_db.initializeDatabase();
@@ -244,8 +289,8 @@ public class x_Peminjaman {
             Logger.getLogger(x_Peminjaman.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    
-    public void admin_konfirmasiPembatalanPinjam(int id_pinjam){
+
+    public void admin_konfirmasiPembatalanPinjam(int id_pinjam) {
         try {
             Class.forName("com.mysql.jdbc.Driver");
             Connection conn = koneksi_db.initializeDatabase();
@@ -258,7 +303,7 @@ public class x_Peminjaman {
             Logger.getLogger(x_Peminjaman.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    
+
     public static List<M_pinjamBuku> admin_getSemuaPermintaanPembatalan() {
         ArrayList<M_pinjamBuku> detail_buku_yang_dipinjam = new ArrayList<M_pinjamBuku>();
         try {
@@ -276,14 +321,13 @@ public class x_Peminjaman {
                 buku_dipinjam.setAkhir_pinjam(rs4.getString("akhir_pinjam"));
                 detail_buku_yang_dipinjam.add(buku_dipinjam);
             }
-            
+
         } catch (Exception ex) {
             Logger.getLogger(x_Peminjaman.class.getName()).log(Level.SEVERE, null, ex);
         }
         return detail_buku_yang_dipinjam;
     }
-    
-    
+
     public static List<M_pinjamBuku> getHistoryPeminjaman() {
         ArrayList<M_pinjamBuku> detail_buku_yang_dipinjam = new ArrayList<M_pinjamBuku>();
         try {
@@ -301,13 +345,13 @@ public class x_Peminjaman {
                 buku_dipinjam.setAkhir_pinjam(rs4.getString("akhir_pinjam"));
                 detail_buku_yang_dipinjam.add(buku_dipinjam);
             }
-            
+
         } catch (Exception ex) {
             Logger.getLogger(x_Peminjaman.class.getName()).log(Level.SEVERE, null, ex);
         }
         return detail_buku_yang_dipinjam;
     }
-    
+
     public static List<M_pinjamBuku> getHistoryPeminjaman_yangMauDikembalikan() {
         ArrayList<M_pinjamBuku> detail_buku_yang_dipinjam = new ArrayList<M_pinjamBuku>();
         try {
@@ -326,13 +370,13 @@ public class x_Peminjaman {
                 buku_dipinjam.setAkhir_pinjam(rs4.getString("akhir_pinjam"));
                 detail_buku_yang_dipinjam.add(buku_dipinjam);
             }
-            
+
         } catch (Exception ex) {
             Logger.getLogger(x_Peminjaman.class.getName()).log(Level.SEVERE, null, ex);
         }
         return detail_buku_yang_dipinjam;
     }
-    
+
     public String getJumlahBuku_dipinjamMember(int id_member) {
         int jumlah_buku_dipinjam = 0;
         try {
@@ -351,7 +395,7 @@ public class x_Peminjaman {
         }
         return Integer.toString(jumlah_buku_dipinjam);
     }
-    
+
     public static List<M_pinjamBuku> member_getBuku_yang_mauDIBATALKAN(int id_member) {
         ArrayList<M_pinjamBuku> detail_buku_yang_dipinjam = new ArrayList<M_pinjamBuku>();
         try {
@@ -370,14 +414,14 @@ public class x_Peminjaman {
                 buku_dipinjam.setBatalkah(rs4.getString("batalkah"));
                 detail_buku_yang_dipinjam.add(buku_dipinjam);
             }
-            
+
         } catch (Exception ex) {
             Logger.getLogger(x_Peminjaman.class.getName()).log(Level.SEVERE, null, ex);
         }
         return detail_buku_yang_dipinjam;
     }
-    
-    public void member_mengajukanPembatalan(int idPinjam_){
+
+    public void member_mengajukanPembatalan(int idPinjam_) {
         try {
             Class.forName("com.mysql.jdbc.Driver");
             Connection conn = koneksi_db.initializeDatabase();
@@ -390,8 +434,8 @@ public class x_Peminjaman {
             Logger.getLogger(x_Peminjaman.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    
-    public void member_perpanjangPinjam(int idPinjam_){
+
+    public void member_perpanjangPinjam(int idPinjam_) {
         try {
             Class.forName("com.mysql.jdbc.Driver");
             Connection conn = koneksi_db.initializeDatabase();
@@ -404,7 +448,7 @@ public class x_Peminjaman {
             Logger.getLogger(x_Peminjaman.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    
+
     public static List<M_detailBuku_Dipinjam> getDetailBuku_yangDipinjam(int id_peminjaman) {
         ArrayList<M_detailBuku_Dipinjam> detail_buku_yang_dipinjam = new ArrayList<M_detailBuku_Dipinjam>();
         try {
@@ -417,14 +461,14 @@ public class x_Peminjaman {
             while (rs4.next()) {
                 M_detailBuku_Dipinjam buku_dipinjam = new M_detailBuku_Dipinjam();
                 buku_dipinjam.setId_pinjam(rs4.getInt("id_pinjam"));
-                
+
                 buku_dipinjam.setJudul_buku(rs4.getString("judul_buku"));
                 buku_dipinjam.setIsbn_buku(rs4.getString("isbn_buku"));
                 buku_dipinjam.setPenerbit_buku(rs4.getString("penerbit_buku"));
                 buku_dipinjam.setPengarang_buku(rs4.getString("pengarang_buku"));
                 buku_dipinjam.setKategori_buku(rs4.getString("kategori_buku"));
                 buku_dipinjam.setTahunterbit_buku(rs4.getString("tahunterbit_buku"));
-                
+
                 buku_dipinjam.setMulai_pinjam(rs4.getString("mulai_pinjam"));
                 buku_dipinjam.setAkhir_pinjam(rs4.getString("akhir_pinjam"));
                 buku_dipinjam.setPinjam_day_remaining(rs4.getString("pinjam_day_remaining"));
@@ -432,12 +476,11 @@ public class x_Peminjaman {
                 buku_dipinjam.setSudah_diambil(rs4.getString("diambilkah"));
                 detail_buku_yang_dipinjam.add(buku_dipinjam);
             }
-            
+
         } catch (Exception ex) {
             Logger.getLogger(x_Peminjaman.class.getName()).log(Level.SEVERE, null, ex);
         }
         return detail_buku_yang_dipinjam;
     }
-    
-    
+
 }
